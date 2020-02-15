@@ -12,6 +12,28 @@ snackbar(text, BuildContext context, _scaffoldKey, {seconds = 5}) {
   _scaffoldKey.currentState.showSnackBar(snack);
 }
 
+alert(context, {title = '', content}) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        /* actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ], */
+      );
+    },
+  );
+}
+
 request(Response response, Function action, context, GlobalKey _scaffoldKey) {
   print(response.statusCode);
   var body = json.decode(response.body);

@@ -22,6 +22,7 @@ class User {
   final String profilePic;
   final DateTime createdAt;
   List<Investment> investments;
+  Map<String, dynamic> dynamicInvestments;
 
   User({
     this.id,
@@ -36,6 +37,7 @@ class User {
     this.profilePic,
     this.createdAt,
     this.investments,
+    this.dynamicInvestments,
   });
 
   factory User.fromMap(Map data) {
@@ -94,12 +96,25 @@ class User {
       main.setLoading(false);
       var body = json.decode(response.body);
       print(body['investments']);
-      request(
-          response,
-          () => this.investments = List<Investment>.from(
-              body['investments'].map((i) => Investment.fromMap(i)).toList()),
-          context,
-          _scaffoldKey);
+      request(response, () {
+        this.investments = List<Investment>.from(
+            body['investments'].map((i) => Investment.fromMap(i)).toList());
+        this.dynamicInvestments['all_investment']['investments'] =
+            List<Investment>.from(
+                body['investments'].map((i) => Investment.fromMap(i)).toList());
+        this.dynamicInvestments['all_investment']['monthInvestmentSum'] =
+            body['monthInvestmentSum'];
+        this.dynamicInvestments['all_investment']['yearInvestmentSum'] =
+            body['yearInvestmentSum'];
+        this.dynamicInvestments['all_investment']['monthEarningSum'] =
+            body['monthEarningSum'];
+        this.dynamicInvestments['all_investment']['yearEarningSum'] =
+            body['yearEarningSum'];
+        this.dynamicInvestments['all_investment']['allInvestmentSum'] =
+            body['allInvestmentSum'];
+        this.dynamicInvestments['all_investment']['allEarningSum'] =
+            body['allEarningSum'];
+      }, context, _scaffoldKey);
     } catch (e) {
       main.setLoading(false);
       snackbar(connErrorMsg, context, _scaffoldKey);

@@ -5,7 +5,7 @@ import 'package:savehouse/pages/auth/login.dart';
 
 import '../values.dart';
 
-Widget splashScreen(){
+Widget splashScreen() {
   return MaterialApp(
     title: 'D',
     theme: ThemeData(
@@ -21,7 +21,6 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-
   @override
   void initState() {
     super.initState();
@@ -30,35 +29,32 @@ class _SplashState extends State<Splash> {
   }
 
   Future<Timer> Loading() async {
-    return Timer(Duration(seconds: 5), onDoneLoading);
+    return Timer(Duration(seconds: 0), onDoneLoading);
   }
 
   onDoneLoading() async {
-    Navigator.pushReplacement(context, MaterialPageRoute(
-      builder: (BuildContext context) => Login()
-    ));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (BuildContext context) => Login()));
   }
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: secondaryColor,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              //Image.asset('assets/images/panic_alert.png', height: 100.0,),
-              //SizedBox(height: 30.0,),
-              Text(
-                'SaveHouse Capital',
-                style: TextStyle(fontSize: 30.0, color: primaryColor),
-              ),
-            ],
-          ),
-        )
-      ),
+          backgroundColor: secondaryColor,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                //Image.asset('assets/images/panic_alert.png', height: 100.0,),
+                //SizedBox(height: 30.0,),
+                Text(
+                  'SaveHouse Capital',
+                  style: TextStyle(fontSize: 30.0, color: primaryColor),
+                ),
+              ],
+            ),
+          )),
     );
   }
 }
