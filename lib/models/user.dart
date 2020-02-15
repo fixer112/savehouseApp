@@ -61,8 +61,8 @@ class User {
   }
 
   Future updateUser(BuildContext context, GlobalKey _scaffoldKey) async {
-    var main = Provider.of<MainModel>(context);
-    var user = Provider.of<UserModel>(context);
+    var main = Provider.of<MainModel>(context, listen: false);
+    var user = Provider.of<UserModel>(context, listen: false);
     try {
       main.setLoading(true);
       final response = await http
@@ -82,7 +82,7 @@ class User {
   }
 
   Future getAllInvestments(BuildContext context, GlobalKey _scaffoldKey) async {
-    var main = Provider.of<MainModel>(context);
+    var main = Provider.of<MainModel>(context, listen: false);
     try {
       //var user = Provider.of<UserModel>(context);
       main.setLoading(true);
@@ -93,6 +93,7 @@ class User {
           });
       main.setLoading(false);
       var body = json.decode(response.body);
+      print(body['investments']);
       request(
           response,
           () => this.investments = List<Investment>.from(
@@ -102,6 +103,7 @@ class User {
     } catch (e) {
       main.setLoading(false);
       snackbar(connErrorMsg, context, _scaffoldKey);
+      print(e.message);
     }
   }
 }

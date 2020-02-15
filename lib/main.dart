@@ -130,9 +130,9 @@ class _MyHomePageState extends State<MyHomePage> {
           builder: (context, user, child) {
             return FloatingActionButton(
               onPressed: () async {
-                user.login('user', 'abula112', context, _scaffoldKey);
-                user.user.getAllInvestments(context, _scaffoldKey);
-                print(user.user.investments);
+                await user.login('user', 'abula112', context, _scaffoldKey);
+                await user.user.getAllInvestments(context, _scaffoldKey);
+                print(user.user.investments[0].ref);
               },
               tooltip: 'Increment',
               child: Icon(Icons.add),

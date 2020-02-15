@@ -15,7 +15,7 @@ snackbar(text, BuildContext context, _scaffoldKey, {seconds = 5}) {
 request(Response response, Function action, context, GlobalKey _scaffoldKey) {
   print(response.statusCode);
   var body = json.decode(response.body);
-  print(body);
+  //print(body);
 
   if (response.statusCode == 422) {
     var errors = '';

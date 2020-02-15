@@ -17,7 +17,7 @@ class UserModel with ChangeNotifier {
     
   } */
 
-  login(
+  Future login(
       String username, String password, context, GlobalKey _scaffoldKey) async {
     var main = Provider.of<MainModel>(context, listen: false);
     //var user = Provider.of<UserModel>(context);
