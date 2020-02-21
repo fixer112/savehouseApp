@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:savehouse/globals.dart';
 import 'package:savehouse/pages/home.dart';
 import 'package:savehouse/pages/user/account.dart';
+import 'package:savehouse/pages/user/activity.dart';
+import 'package:savehouse/pages/user/invest.dart';
 import 'package:savehouse/pages/widgets/editprofile.dart';
 
 import 'values.dart';
@@ -19,6 +21,7 @@ class Widgets {
               filled: true,
               border: OutlineInputBorder(borderSide: BorderSide.none),
               hintText: hintText,
+              contentPadding: EdgeInsets.all(10),
               hintStyle: TextStyle(
                   fontFamily: 'FB Agency',
                   color: Colors.black,
@@ -129,8 +132,8 @@ class Widgets {
             MaterialPageRoute(
                 builder: (context) => <Widget>[
                       Home(),
-                      Home(),
-                      Home(),
+                      Invest(),
+                      Activity(),
                       Account(),
                     ][ind]));
       },
@@ -204,6 +207,39 @@ class Widgets {
           ),
         ],
       ),
+    );
+  }
+
+  static statusPending(){
+    return Container(
+      decoration: BoxDecoration(
+        color: dangerColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: EdgeInsets.symmetric( vertical: 4.0, horizontal: 10.0 ),
+      child: Text( 'pending', style: TextStyle( fontSize: 13, color: Colors.white ), ),
+    );
+  }
+
+  static statusApproved(){
+    return Container(
+      decoration: BoxDecoration(
+        color: successColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: EdgeInsets.symmetric( vertical: 4.0, horizontal: 10.0 ),
+      child: Text( 'approved', style: TextStyle( fontSize: 13, color: Colors.white ), ),
+    );
+  }
+
+  static statusCompleted(){
+    return Container(
+      decoration: BoxDecoration(
+        color: successColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: EdgeInsets.symmetric( vertical: 4.0, horizontal: 10.0 ),
+      child: Text( 'completed', style: TextStyle( fontSize: 13, color: Colors.white ), ),
     );
   }
 }

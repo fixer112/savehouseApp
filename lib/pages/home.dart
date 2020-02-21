@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:savehouse/pages/widgets/investments.dart';
 import 'package:savehouse/values.dart';
 import 'package:savehouse/widgets.dart';
@@ -10,6 +11,20 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int current = 0;
+  List<Map> balances = [];
+
+  @override
+  void initState() {
+    
+    balances.add({ 'title': 'Total Investments', 'value': '525,000.00', 'color': Colors.red });
+    balances.add({ 'title': 'Total Investments (Annual)', 'value': '525,000.00', 'color': primaryColor });
+    balances.add({ 'title': 'Total Earnings (Monthly)', 'value': '181,500.00', 'color': Colors.blueAccent });
+    balances.add({ 'title': 'Total Earnings (Annual)', 'value': '334,250.00', 'color': Colors.lightGreen });
+    balances.add({ 'title': 'Total Investments (All Time)', 'value': '2,775,000.00', 'color': Colors.teal });
+    balances.add({ 'title': 'Total Earnings (All Time)', 'value': '1,013,500.00', 'color': Colors.deepOrange });
+    
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +43,12 @@ class _HomeState extends State<Home> {
               height: 90,
               child: PageView.builder(
                 physics: BouncingScrollPhysics(),
-                itemCount: 3,
+                itemCount: balances.length,
                 itemBuilder: (context, index) {
                   return Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
-                      color: Colors.blue,
+                      color: balances[index]['color'],
                     ),
                     margin: EdgeInsets.symmetric(horizontal: 3.0),
                     padding: EdgeInsets.all(15.0),
@@ -41,23 +56,23 @@ class _HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.multiline_chart,
+                          FontAwesomeIcons.chartBar,
                           color: Colors.white,
-                          size: 37,
+                          size: 27,
                         ),
-                        SizedBox(width: 15),
+                        SizedBox(width: 30),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              'Monthly Earnings',
+                              balances[index]['title'],
                               style: TextStyle(
                                   fontSize: 13, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: 4),
                             Text(
-                              'N200,000,000.00',
+                              'N'+balances[index]['value'],
                               style: TextStyle(
                                   color: whiteColor,
                                   fontSize: 19.0,
