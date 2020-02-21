@@ -156,7 +156,7 @@ class Widgets {
           Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              border: Border.all(color: whiteColor),
+              border: Border.all(color: shyColor),
               borderRadius: BorderRadius.circular(10),
             ),
             child: ClipRRect(
