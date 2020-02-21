@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:savehouse/values.dart';
 
 class ImagePreview extends StatefulWidget {
-
   final Widget image;
 
   const ImagePreview(this.image, {Key key}) : super(key: key);
@@ -34,8 +34,12 @@ class _ImagePreviewState extends State<ImagePreview> {
             top: 20,
             right: 20,
             child: IconButton(
-              icon: Icon( Icons.cancel, size: 25, color: Colors.redAccent, ),
-              onPressed: (){
+              icon: Icon(
+                Icons.cancel,
+                size: 25,
+                color: primaryColor,
+              ),
+              onPressed: () {
                 Navigator.pop(context);
               },
             ),
@@ -46,9 +50,9 @@ class _ImagePreviewState extends State<ImagePreview> {
   }
 }
 
-void showImagePreview( context, image ){
+void showImagePreview(context, image) {
   showDialog(
     context: context,
-    builder: (BuildContext context) => ImagePreview( image ),
+    builder: (BuildContext context) => ImagePreview(image),
   );
 }

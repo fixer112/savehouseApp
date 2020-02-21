@@ -168,7 +168,7 @@ class Widgets {
                     child: Container(
                       padding: EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: index == cls.current ? Colors.purple : null,
+                        color: index == cls.current ? primaryColor : null,
                         border: (index == widgets.length - 1 ||
                                 index == cls.current)
                             ? null
@@ -210,36 +210,45 @@ class Widgets {
     );
   }
 
-  static statusPending(){
+  static statusPending() {
     return Container(
       decoration: BoxDecoration(
         color: dangerColor,
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: EdgeInsets.symmetric( vertical: 4.0, horizontal: 10.0 ),
-      child: Text( 'pending', style: TextStyle( fontSize: 13, color: Colors.white ), ),
+      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
+      child: Text(
+        'pending',
+        style: TextStyle(fontSize: 13, color: Colors.white),
+      ),
     );
   }
 
-  static statusApproved(){
+  static statusApproved() {
     return Container(
       decoration: BoxDecoration(
         color: successColor,
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: EdgeInsets.symmetric( vertical: 4.0, horizontal: 10.0 ),
-      child: Text( 'approved', style: TextStyle( fontSize: 13, color: Colors.white ), ),
+      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
+      child: Text(
+        'approved',
+        style: TextStyle(fontSize: 13, color: Colors.white),
+      ),
     );
   }
 
-  static statusCompleted(){
+  static statusCompleted() {
     return Container(
       decoration: BoxDecoration(
         color: successColor,
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: EdgeInsets.symmetric( vertical: 4.0, horizontal: 10.0 ),
-      child: Text( 'completed', style: TextStyle( fontSize: 13, color: Colors.white ), ),
+      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
+      child: Text(
+        'completed',
+        style: TextStyle(fontSize: 13, color: Colors.white),
+      ),
     );
   }
 }
