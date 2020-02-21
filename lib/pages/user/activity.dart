@@ -53,7 +53,7 @@ class _ActivityState extends State<Activity> {
                   elevation: 0,
                   child: Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: whiteColor),
+                        border: Border.all(color: shyColor),
                         borderRadius: BorderRadius.circular(8)),
                     padding: EdgeInsets.all(10),
                     child: Column(
@@ -74,7 +74,7 @@ class _ActivityState extends State<Activity> {
                         Container(
                           alignment: Alignment.centerRight,
                           child: Container(
-                            color: whiteColor,
+                            color: shyColor,
                             padding: EdgeInsets.symmetric(
                                 vertical: 2, horizontal: 8),
                             child: Text('self'),

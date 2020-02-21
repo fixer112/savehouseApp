@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:savehouse/pages/widgets/investments.dart';
@@ -15,14 +17,31 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    
-    balances.add({ 'title': 'Total Investments', 'value': '525,000.00', 'color': Colors.red });
-    balances.add({ 'title': 'Total Investments (Annual)', 'value': '525,000.00', 'color': primaryColor });
-    balances.add({ 'title': 'Total Earnings (Monthly)', 'value': '181,500.00', 'color': Colors.blueAccent });
-    balances.add({ 'title': 'Total Earnings (Annual)', 'value': '334,250.00', 'color': Colors.lightGreen });
-    balances.add({ 'title': 'Total Investments (All Time)', 'value': '2,775,000.00', 'color': Colors.teal });
-    balances.add({ 'title': 'Total Earnings (All Time)', 'value': '1,013,500.00', 'color': Colors.deepOrange });
-    
+    balances.add({
+      'title': 'Total Investments',
+      'value': '525,000.00',
+    });
+    balances.add({
+      'title': 'Total Investments (Annual)',
+      'value': '525,000.00',
+    });
+    balances.add({
+      'title': 'Total Earnings (Monthly)',
+      'value': '181,500.00',
+    });
+    balances.add({
+      'title': 'Total Earnings (Annual)',
+      'value': '334,250.00',
+    });
+    balances.add({
+      'title': 'Total Investments (All Time)',
+      'value': '2,775,000.00',
+    });
+    balances.add({
+      'title': 'Total Earnings (All Time)',
+      'value': '1,013,500.00',
+    });
+
     super.initState();
   }
 
@@ -47,8 +66,8 @@ class _HomeState extends State<Home> {
                 itemBuilder: (context, index) {
                   return Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: balances[index]['color'],
+                      borderRadius: BorderRadius.circular(5),
+                      color: index % 2 != 0 ? primaryColor : secondaryColor,
                     ),
                     margin: EdgeInsets.symmetric(horizontal: 3.0),
                     padding: EdgeInsets.all(15.0),
@@ -68,16 +87,20 @@ class _HomeState extends State<Home> {
                             Text(
                               balances[index]['title'],
                               style: TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.bold),
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: whiteColor,
+                              ),
                             ),
                             SizedBox(height: 4),
                             Text(
-                              'N'+balances[index]['value'],
+                              'N' + balances[index]['value'],
                               style: TextStyle(
-                                  color: whiteColor,
-                                  fontSize: 19.0,
-                                  fontWeight: FontWeight.w900,
-                                  shadows: Widgets.textShadows()),
+                                color: whiteColor,
+                                fontSize: 19.0,
+                                fontWeight: FontWeight.w900,
+                                //shadows: Widgets.textShadows(),
+                              ),
                             ),
                           ],
                         ),
@@ -91,8 +114,7 @@ class _HomeState extends State<Home> {
             Text(
               'Investments',
               style: TextStyle(
-                  fontSize: 20,
-                  shadows: Widgets.textShadows(color: whiteColor)),
+                  fontSize: 20, shadows: Widgets.textShadows(color: shyColor)),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20),

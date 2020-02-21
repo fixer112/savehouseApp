@@ -18,7 +18,7 @@ class _EditProfileState extends State<EditProfile> {
   var phone = TextEditingController();
 
   var loading = false;
-  
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,7 +34,7 @@ class _EditProfileState extends State<EditProfile> {
             right: 0,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical( top: Radius.circular(25) ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
                 color: Colors.white,
               ),
               padding: EdgeInsets.all(30.0),
@@ -42,39 +42,63 @@ class _EditProfileState extends State<EditProfile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text( 'Edit Account', style: TextStyle( fontSize: 21.0, fontWeight: FontWeight.bold, fontFamily: 'calibri' ), ),
+                    Text(
+                      'Edit Account',
+                      style: TextStyle(
+                          fontSize: 21.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'calibri'),
+                    ),
                     SizedBox(height: 15),
-
-                    Text( 'Full Name', style: TextStyle( fontSize: 13, fontWeight: FontWeight.bold ), ),
-                    Widgets.textField(fullName, 'Full Name', TextInputType.text),
+                    Text(
+                      'Full Name',
+                      style:
+                          TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                    ),
+                    Widgets.textField(
+                        fullName, 'Full Name', TextInputType.text),
                     SizedBox(height: 25),
-
-                    Text( 'Username', style: TextStyle( fontSize: 13, fontWeight: FontWeight.bold ), ),
+                    Text(
+                      'Username',
+                      style:
+                          TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                    ),
                     Widgets.textField(username, '@johndoe', TextInputType.text),
                     SizedBox(height: 25),
-
-                    Text( 'Email Address', style: TextStyle( fontSize: 13, fontWeight: FontWeight.bold ), ),
-                    Widgets.textField(email, 'Email Address', TextInputType.emailAddress),
+                    Text(
+                      'Email Address',
+                      style:
+                          TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                    ),
+                    Widgets.textField(
+                        email, 'Email Address', TextInputType.emailAddress),
                     SizedBox(height: 25),
-
-                    Text( 'Phone Number', style: TextStyle( fontSize: 13, fontWeight: FontWeight.bold ), ),
-                    Widgets.textField(phone, 'Phone Number', TextInputType.phone),
+                    Text(
+                      'Phone Number',
+                      style:
+                          TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                    ),
+                    Widgets.textField(
+                        phone, 'Phone Number', TextInputType.phone),
                     SizedBox(height: 25),
-
                     FlatButton(
                       color: primaryColor,
-                      child: loading==true ?
-                        SizedBox(
-                          height: 15,
-                          width: 15,
-                          child: CircularProgressIndicator( strokeWidth: 2 ),
-                        )
-                      : Text( 'SAVE', style: TextStyle( fontSize: 12.0, fontWeight: FontWeight.bold ), ),
-                      onPressed: (){
+                      child: loading == true
+                          ? SizedBox(
+                              height: 15,
+                              width: 15,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Text(
+                              'SAVE',
+                              style: TextStyle(
+                                  fontSize: 12.0, fontWeight: FontWeight.bold),
+                            ),
+                      onPressed: () {
                         setState(() {
                           loading = true;
                         });
-                        Timer.periodic(Duration(seconds: 2), (t){
+                        Timer.periodic(Duration(seconds: 2), (t) {
                           setState(() {
                             loading = false;
                           });
@@ -97,8 +121,12 @@ class _EditProfileState extends State<EditProfile> {
             width: 40,
             right: 7,
             child: IconButton(
-              icon: Icon( Icons.cancel, size: 23, color: Colors.red, ),
-              onPressed: (){
+              icon: Icon(
+                Icons.cancel,
+                size: 23,
+                color: primaryColor,
+              ),
+              onPressed: () {
                 Navigator.pop(context);
               },
             ),
@@ -109,11 +137,10 @@ class _EditProfileState extends State<EditProfile> {
   }
 }
 
-void showEditProfile( context ){
+void showEditProfile(context) {
   showDialog(
-    context: context,
-    builder: (context){
-      return EditProfile();
-    }
-  );
+      context: context,
+      builder: (context) {
+        return EditProfile();
+      });
 }
