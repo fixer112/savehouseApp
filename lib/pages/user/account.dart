@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:savehouse/pages/auth/login.dart';
 import 'package:savehouse/pages/widgets/editprofile.dart';
+import 'package:savehouse/providers/user.dart';
 import 'package:savehouse/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -17,8 +20,16 @@ class _AccountState extends State<Account> {
       body: ListView(
         padding: EdgeInsets.all(20),
         children: <Widget>[
-          Widgets.pageTitle('My Account', 'Matnex Mix',
-              icon: 1, context: context),
+          Consumer<UserModel>(builder: (context, user, child) {
+            return Widgets.pageTitle(
+              'My Account',
+              user.user.fullname,
+              icon: 1,
+              context: context,
+              image: CircleAvatar(
+                  backgroundImage: NetworkImage(url + user.user.profilePic)),
+            );
+          }),
           Container(
             margin: EdgeInsets.symmetric(vertical: 20.0),
             decoration: BoxDecoration(
@@ -149,7 +160,10 @@ class _AccountState extends State<Account> {
                       color: Colors.red,
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Login())),
                 ),
               ),
             ],

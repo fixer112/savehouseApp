@@ -1,8 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:savehouse/pages/auth/register.dart';
 import 'package:savehouse/pages/home.dart';
+import 'package:savehouse/providers/main.dart';
+import 'package:savehouse/providers/user.dart';
+import 'package:savehouse/widgets.dart';
 
 import '../../values.dart';
 
@@ -14,93 +18,96 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   var username = TextEditingController();
   var password = TextEditingController();
-  var loading = false;
+  //var loading = false;
+  final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
-  Widget build( context ){
+  Widget build(context) {
+    //var main = Provider.of<MainModel>(context, listen: false);
     return MaterialApp(
       home: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.white,
         body: ListView(
           padding: EdgeInsets.all(20.0),
           children: <Widget>[
             SizedBox(height: 100.0),
-            Text( 'Login', style: TextStyle( fontSize: 27.0, fontWeight: FontWeight.bold ),),
+            Text(
+              'Login',
+              style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 4),
-            Text( 'securely login to your safehouse account', style: TextStyle( fontSize: 13, fontWeight: FontWeight.bold ), ),
+            Text(
+              'securely login to your safehouse account',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 30),
-
-            Text( 'Username', style: TextStyle( fontSize: 13, fontWeight: FontWeight.bold ), ),
+            Text(
+              'Username',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+            ),
             Container(
               height: 40.0,
               margin: EdgeInsets.only(top: 10.0),
-              child: TextField(
-                controller: username,
-                decoration: InputDecoration(
-                  fillColor: whiteColor,
-                  filled: true,
-                  border: OutlineInputBorder( borderSide: BorderSide.none ),
-                  hintText: '@johndoe',
-                  hintStyle: TextStyle( fontFamily: 'Agency FB', color: Colors.black, fontWeight: FontWeight.bold )
-                ),
-                keyboardType: TextInputType.text
-              ),
+              child:
+                  Widgets.textField(username, 'username', TextInputType.text),
             ),
             SizedBox(height: 25),
-
-            Text( 'Password', style: TextStyle( fontSize: 13, fontWeight: FontWeight.bold ), ),
+            Text(
+              'Password',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+            ),
             Container(
               height: 40.0,
               margin: EdgeInsets.only(top: 10.0),
-              child: TextField(
-                controller: password,
-                decoration: InputDecoration(
-                  fillColor: whiteColor,
-                  filled: true,
-                  border: OutlineInputBorder( borderSide: BorderSide.none ),
-                  hintText: '******',
-                  hintStyle: TextStyle( fontFamily: 'Agency FB', color: Colors.black, fontWeight: FontWeight.bold )
-                ),
-                obscureText: true,
-                keyboardType: TextInputType.visiblePassword
-              ),
+              child: Widgets.textField(
+                  password, '*******', TextInputType.visiblePassword),
             ),
             SizedBox(height: 25),
+            Consumer<UserModel>(builder: (context, user, child) {
+              return FlatButton(
+                color: primaryColor,
+                child: user.isloading
+                    ? SizedBox(
+                        height: 15,
+                        width: 15,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ))
+                    : Text(
+                        'LOGIN',
+                        style: TextStyle(
+                            fontSize: 12.0, fontWeight: FontWeight.bold),
+                      ),
+                onPressed: () async {
+                  /* user.setLoading(true);
+                  Timer.periodic(Duration(seconds: 2), (t) {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => Home()));
+                    user.setLoading(false);
 
-            FlatButton(
-              color: primaryColor,
-              child: loading==true ?
-                SizedBox(
-                  height: 15,
-                  width: 15,
-                  child: CircularProgressIndicator( strokeWidth: 2, )
-                )
-              : Text( 'LOGIN', style: TextStyle( fontSize: 12.0, fontWeight: FontWeight.bold ), ),
-              onPressed: (){
-                setState(() {
-                  loading = true;
-                });
-                Timer.periodic(Duration(seconds: 2), (t){
-                  setState(() {
-                    loading = false;
-                  });
-                  Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (BuildContext context) => Home()
-                  ));
-                  t.cancel();
-                });
-              },
-            ),
+                    t.cancel();
+                  }); */
+                  user.login('user', 'abula112', context, _scaffoldKey);
+                },
+              );
+            }),
             InkWell(
               child: Container(
                 padding: EdgeInsets.all(20.0),
                 alignment: Alignment.center,
-                child: Text( 'Don\'t have an account? Register', style: TextStyle( fontSize: 12.0, fontWeight: FontWeight.bold ), ),
+                child: Text(
+                  'Don\'t have an account? Register',
+                  style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
+                ),
               ),
-              onTap: (){
-                Navigator.pushReplacement(context, MaterialPageRoute(
-                  builder: (BuildContext context) => Register()
-                ));
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Register()));
               },
             ),
           ],

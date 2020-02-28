@@ -15,10 +15,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      //                                     <--- MultiProvider
       providers: [
         ChangeNotifierProvider<UserModel>(create: (context) => UserModel()),
-        ChangeNotifierProvider<MainModel>(create: (context) => MainModel()),
+        //ChangeNotifierProvider<MainModel>(create: (context) => MainModel()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -81,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Consumer<MainModel>(builder: (context, main, child) {
+    return Consumer<UserModel>(builder: (context, user, child) {
       return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -94,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
             return Center(
               // Center is a layout widget. It takes a single child and positions it
               // in the middle of the parent.
-              child: main.isLoading
+              child: user.isloading
                   ? CircularProgressIndicator()
                   : Column(
                       // Column is also a layout widget. It takes a list of children and

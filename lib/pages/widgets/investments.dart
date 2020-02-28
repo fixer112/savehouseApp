@@ -1,12 +1,17 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:savehouse/models/investment.dart';
 import 'package:savehouse/pages/user/investment.dart';
 import 'package:savehouse/pages/widgets/imagepreview.dart';
 import 'package:savehouse/values.dart';
 import 'package:savehouse/widgets.dart';
 
 class Investments extends StatefulWidget {
+  final List<Investment> investments;
+  Investments(this.investments);
   @override
   _InvestmentsState createState() => _InvestmentsState();
 }
@@ -14,24 +19,28 @@ class Investments extends StatefulWidget {
 class _InvestmentsState extends State<Investments> {
   @override
   Widget build(BuildContext context) {
+    //print(widget.investments[0]);
+    List<Investment> investments = widget.investments;
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: List.generate(8, (index){
-          return investmentEach( context );
+        children: List.generate(investments.length, (index) {
+          //var key = investments.keys.toList()[index];
+          return investmentEach(context, investments[index]);
         }),
       ),
     );
   }
 }
 
-Widget investmentEach( context ){
+Widget investmentEach(context, Investment investment) {
+  //print(url + investment.proofPic);
   return Container(
     decoration: BoxDecoration(
-      border: Border.all( color: whiteColor ),
+      border: Border.all(color: shyColor),
       borderRadius: BorderRadius.circular(8.0),
     ),
-    margin: EdgeInsets.only( top: 10, bottom: 15 ),
+    margin: EdgeInsets.only(top: 10, bottom: 15),
     child: Row(
       children: <Widget>[
         InkWell(
@@ -39,65 +48,94 @@ Widget investmentEach( context ){
             height: 90,
             width: 90,
             child: FittedBox(
-              child: FlutterLogo(colors: Colors.green,),
+              child: Image.network(url + investment.proofPic),
               fit: BoxFit.cover,
             ),
           ),
-          onTap: (){
-            showImagePreview(context, FlutterLogo(colors: Colors.green,));
+          onTap: () {
+            showImagePreview(
+              context,
+              Image.network(url + investment.proofPic),
+            );
           },
         ),
         InkWell(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Investment()));
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => InvestmentWidget()));
           },
           child: Container(
             padding: EdgeInsets.all(15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text( '8omFfXp3AGG1pO1', style: TextStyle( fontWeight: FontWeight.bold, fontSize: 16 ), ),
+                Text(
+                  investment.ref,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
                 Container(
-                  margin: EdgeInsets.only( top: 10, bottom: 0 ),
+                  margin: EdgeInsets.only(top: 10, bottom: 0),
                   child: Row(
                     //mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text( 'N500,000', style: TextStyle( fontSize: 15 ), ),
+                      Text(
+                        Widgets.currency(investment.amount),
+                        style: TextStyle(fontSize: 15),
+                      ),
                       SizedBox(width: 10),
-                      Text( '/', style: TextStyle( fontSize: 19 ), ),
+                      Text(
+                        '/',
+                        style: TextStyle(fontSize: 19),
+                      ),
                       SizedBox(width: 10),
-                      Text( '3 months', style: TextStyle( fontSize: 15 ), ),
+                      Text(
+                        '${investment.duration.toString()} months',
+                        style: TextStyle(fontSize: 15),
+                      ),
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only( bottom: 10.0 ),
-                  child: Row(
-                    //mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text( '23 Mar, 2019', style: TextStyle( fontSize: 13 ), ),
-                      SizedBox(width: 10),
-                      Text( '-', style: TextStyle( fontSize: 19 ), ),
-                      SizedBox(width: 10),
-                      Text( 'not decided', style: TextStyle( fontSize: 13 ), ),
-                    ],
-                  ),
-                ),
+                investment.startDate.contains('pending')
+                    ? Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                      )
+                    : Container(
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        child: Row(
+                          //mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              investment.startDate,
+                              style: TextStyle(fontSize: 13),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              '-',
+                              style: TextStyle(fontSize: 19),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              investment.endDate,
+                              style: TextStyle(fontSize: 13),
+                            ),
+                          ],
+                        ),
+                      ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Container(
-                      child: Text( ['Forex', 'Real Estate'][Random.secure().nextInt(2)] ),
-                      decoration: BoxDecoration(
-                        color: whiteColor
-                      ),
+                      child: Text(investment.type.toUpperCase()),
+                      decoration: BoxDecoration(color: shyColor),
                       padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
                     ),
-                    SizedBox(width: 11),
-                    [Widgets.statusPending(),
-                      Widgets.statusCompleted(),
-                      Widgets.statusApproved(),
-                    ][Random.secure().nextInt(3)]
+                    SizedBox(width: 15),
+                    Widgets.status(
+                        investment.activeStatus, investment.isActive),
                   ],
                 ),
               ],

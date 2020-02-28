@@ -4,12 +4,12 @@ import 'package:savehouse/widgets.dart';
 
 import '../../values.dart';
 
-class Investment extends StatefulWidget {
+class InvestmentWidget extends StatefulWidget {
   @override
   _InvestmentState createState() => _InvestmentState();
 }
 
-class _InvestmentState extends State<Investment> {
+class _InvestmentState extends State<InvestmentWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
