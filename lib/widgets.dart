@@ -281,4 +281,12 @@ class Widgets {
     var f = NumberFormat("#,###");
     return '₦' + f.format(number); //globals.formatCurrency.format(number);
   }
+
+  static profitIcon(){
+    return Icon( Icons.arrow_upward, size: 20, color: successColor, );
+  }
+
+  static lossIcon(){
+    return Icon( Icons.arrow_downward, size: 20, color: dangerColor, );
+  }
 }
