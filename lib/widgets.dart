@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:savehouse/globals.dart';
+import 'package:savehouse/models/user.dart';
 import 'package:savehouse/pages/home.dart';
 import 'package:savehouse/pages/user/account.dart';
 import 'package:savehouse/pages/user/activity.dart';
@@ -196,6 +197,7 @@ class Widgets {
                           //print(user.user.dynamicInvestments['all']);
                           cls.setState(() {
                             cls.current = index;
+                            cls.type = key;
                           });
                         },
                       ),
@@ -280,5 +282,14 @@ class Widgets {
   static currency(number) {
     var f = NumberFormat("#,###");
     return '₦' + f.format(number); //globals.formatCurrency.format(number);
+  }
+
+  static loader(user) {
+    return user.isloading
+        ? Center(
+            child: CircularProgressIndicator(
+            strokeWidth: 3,
+          ))
+        : Container();
   }
 }

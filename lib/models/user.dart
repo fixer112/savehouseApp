@@ -114,26 +114,36 @@ class User {
   }
 
   Future getTypeInvestments(
-      BuildContext context, GlobalKey _scaffoldKey, String type) async {
+      BuildContext context, GlobalKey _scaffoldKey, String type,
+      {showLoad = true}) async {
     var user = Provider.of<UserModel>(context, listen: false);
     try {
       //var user = Provider.of<UserModel>(context);
-      user.setLoading(true);
+      if (showLoad) {
+        user.setLoading(true);
+      }
       final response = await http.get(
           '${user.hostUrl}/api/user/${user.user.id}/investments/$type?api_token=${this.apiToken}',
           headers: {
             'Accept': 'application/json',
           });
-      user.setLoading(false);
+
+      if (showLoad) {
+        user.setLoading(false);
+      }
+
       var body = json.decode(response.body);
       //print(body);
       request(response, () {
         body.removeWhere((String key, dynamic value) => key == 'investments');
-        this.dynamicInvestments = Map();
+        //this.dynamicInvestments = Map();
         this.dynamicInvestments.addAll({'$type': body});
       }, context, _scaffoldKey);
+      return this.dynamicInvestments;
     } catch (e) {
-      user.setLoading(false);
+      if (showLoad) {
+        user.setLoading(false);
+      }
       print(e);
       snackbar(connErrorMsg, context, _scaffoldKey);
     }
