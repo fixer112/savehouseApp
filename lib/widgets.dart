@@ -292,4 +292,20 @@ class Widgets {
           ))
         : Container();
   }
+
+  static profitIcon() {
+    return Icon(
+      Icons.arrow_upward,
+      size: 20,
+      color: successColor,
+    );
+  }
+
+  static lossIcon() {
+    return Icon(
+      Icons.arrow_downward,
+      size: 20,
+      color: dangerColor,
+    );
+  }
 }
