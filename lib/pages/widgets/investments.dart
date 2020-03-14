@@ -64,7 +64,8 @@ Widget investmentEach(context, Investment investment) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => InvestmentWidget()));
+                    builder: (BuildContext context) =>
+                        InvestmentWidget(investment)));
           },
           child: Container(
             padding: EdgeInsets.all(15.0),

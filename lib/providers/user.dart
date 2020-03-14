@@ -64,7 +64,7 @@ class UserModel extends ChangeNotifier {
       }, context, _scaffoldKey);
     } catch (e) {
       user.setLoading(false);
-      //print(e);
+      print(e.message);
       //snackbar(e.message(), context, _scaffoldKey);
       return snackbar(connErrorMsg, context, _scaffoldKey);
     }

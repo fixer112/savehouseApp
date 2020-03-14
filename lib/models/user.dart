@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:savehouse/models/activity.dart';
 import 'package:savehouse/models/investment.dart';
 import 'package:http/http.dart' as http;
 import 'package:savehouse/pages/widgets/investments.dart';
@@ -23,6 +24,7 @@ class User {
   final String profilePic;
   final DateTime createdAt;
   List<Investment> investments;
+  List<Activity> activities;
   Map<String, dynamic> dynamicInvestments;
   var settings;
 
@@ -39,6 +41,7 @@ class User {
     this.profilePic,
     this.createdAt,
     this.investments,
+    this.activities,
     this.dynamicInvestments,
     this.settings,
   });
@@ -59,6 +62,7 @@ class User {
       type: data['type'],
       profilePic: data['profile_pic'],
       createdAt: DateTime.parse(data['created_at']) ?? null,
+      activities: [],
       /* investments: List<Investment>.from(
           data['investments'].map((i) => Investment.fromMap(i)).toList()),
        */ //appToken: data['app_token'],
@@ -108,7 +112,7 @@ class User {
       }, context, _scaffoldKey);
     } catch (e) {
       user.setLoading(false);
-      print(e);
+      print(e.message);
       snackbar(connErrorMsg, context, _scaffoldKey);
     }
   }
@@ -140,6 +144,40 @@ class User {
         this.dynamicInvestments.addAll({'$type': body});
       }, context, _scaffoldKey);
       return this.dynamicInvestments;
+    } catch (e) {
+      if (showLoad) {
+        user.setLoading(false);
+      }
+      print(e);
+      snackbar(connErrorMsg, context, _scaffoldKey);
+    }
+  }
+
+  Future getActivities(BuildContext context, GlobalKey _scaffoldKey,
+      {showLoad = true}) async {
+    var user = Provider.of<UserModel>(context, listen: false);
+    try {
+      //var user = Provider.of<UserModel>(context);
+      if (showLoad) {
+        user.setLoading(true);
+      }
+      final response = await http.get(
+          '${user.hostUrl}/api/user/${user.user.id}/activity?api_token=${this.apiToken}',
+          headers: {
+            'Accept': 'application/json',
+          });
+
+      if (showLoad) {
+        user.setLoading(false);
+      }
+
+      var body = json.decode(response.body);
+      //print(body);
+      request(response, () {
+        this.activities = List<Activity>.from(
+            body['activities'].map((i) => Activity.fromMap(i)).toList());
+      }, context, _scaffoldKey);
+      return this.activities;
     } catch (e) {
       if (showLoad) {
         user.setLoading(false);

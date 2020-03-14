@@ -1,42 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:savehouse/models/earning.dart';
+import 'package:savehouse/models/payment.dart';
 import 'package:savehouse/widgets.dart';
 
 import '../../values.dart';
 
-class Earnings extends StatefulWidget {
-  final List<Earning> earnings;
+class Payments extends StatefulWidget {
+  final List<Payment> payments;
 
-  Earnings(this.earnings);
+  Payments(this.payments);
   @override
-  _EarningsState createState() => _EarningsState();
+  _PaymentsState createState() => _PaymentsState();
 }
 
-class _EarningsState extends State<Earnings> {
+class _PaymentsState extends State<Payments> {
   var tempHolder = [];
   final tooltipKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     // Scope to create a Grid
-    // widget.earnings = [];
-    return widget.earnings.length < 1
+    // widget.payments = [];
+    return widget.payments.length < 1
         ? Center(
             //padding: EdgeInsets.symmetric(vertical: 20, horizontal: 55),
             child: Text(
-              'No Earning Available',
+              'No Payment Available',
               style: TextStyle(
                   fontSize: 20, shadows: Widgets.textShadows(color: shyColor)),
               textAlign: TextAlign.center,
             ),
           )
         : Column(
-            children: List.generate(widget.earnings.length, (index) {
+            children: List.generate(widget.payments.length, (index) {
               var _return = Container(
                 height: 0,
               );
               var amt =
-                  double.tryParse(widget.earnings[index].amount.toString());
+                  double.tryParse(widget.payments[index].amount.toString());
 
               tempHolder.add(Container(
                 margin: index % 2 == 0
@@ -52,16 +52,16 @@ class _EarningsState extends State<Earnings> {
                       Row(
                         children: <Widget>[
                           Text(
-                            '${widget.earnings[index].id}',
+                            '${widget.payments[index].id}',
                             style: TextStyle(fontSize: 16),
                           ),
                           Expanded(child: Container()),
-                          Text(
-                            '${widget.earnings[index].percentage}%',
+                          /* Text(
+                            '${widget.payments[index].percentage}%',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w400),
                           ),
-                          amt <= 0 ? Widgets.lossIcon() : Widgets.profitIcon(),
+                          amt <= 0 ? Widgets.lossIcon() : Widgets.profitIcon(), */
                         ],
                       ),
                       SizedBox(
@@ -83,14 +83,14 @@ class _EarningsState extends State<Earnings> {
                         padding: EdgeInsets.symmetric(
                             vertical: 4.0, horizontal: 6.0),
                         child: Text(
-                          widget.earnings[index].addedAt,
+                          widget.payments[index].paidAt,
                           style: TextStyle(fontSize: 13, color: Colors.white),
                         ),
                       ),
                     ]),
               ));
 
-              if (index % 2 == 1 || widget.earnings.length == index + 1) {
+              if (index % 2 == 1 || widget.payments.length == index + 1) {
                 _return = Container(
                   margin: EdgeInsets.symmetric(vertical: 6),
                   child: Row(

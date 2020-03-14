@@ -1,46 +1,139 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:savehouse/models/investment.dart';
 import 'package:savehouse/pages/widgets/imagepreview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:savehouse/pages/widgets/payments.dart';
+import 'package:savehouse/providers/user.dart';
 import 'package:savehouse/widgets.dart';
 import 'package:savehouse/pages/widgets/earnings.dart';
 
 import '../../values.dart';
 
 class InvestmentWidget extends StatefulWidget {
+  Investment investment;
+
+  InvestmentWidget(this.investment);
+
   @override
   _InvestmentState createState() => _InvestmentState();
 }
 
 class _InvestmentState extends State<InvestmentWidget> {
+  final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
+  int current = 0;
+  String type = 'earnings';
+  List<Map> balances = [];
 
-  var balances = [{
-    'title': 'Total Earnings (Monthly)',
-    'value': 200000,
-  }];
+  getBalance() {
+    balances = [];
+
+    var data = widget.investment.dynamicData;
+    //print(data);
+    //return;
+
+    if (data.length > 0) {
+      balances.add({
+        'title': 'Total Earnings (This Month)',
+        'value': data['monthEarningSum'],
+      });
+      balances.add({
+        'title': 'Total Earnings (This Year)',
+        'value': data['yearEarningSum'],
+      });
+      balances.add({
+        'title': 'Total Earnings (All Time)',
+        'value': data['allEarningSum'],
+      });
+
+      balances.add({
+        'title': 'Total Payments (This Month)',
+        'value': data['monthPaymentSum'],
+      });
+      balances.add({
+        'title': 'Total Payments (This Year)',
+        'value': data['yearPaymentSum'],
+      });
+      balances.add({
+        'title': 'Total Payments (All Time)',
+        'value': data['allPaymentSum'],
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getEarnings();
+  }
+
+  getEarnings({reload = false}) async {
+    // print(widget.investment.earnings);
+    if (widget.investment.earnings.isEmpty || reload) {
+      await widget.investment.getAllEarnings(context, _scaffoldKey);
+      print(widget.investment.payments);
+      /*  .then((e) {
+        //var user = Provider.of<UserModel>(context, listen: false);
+         Investment invest = user.user.investments
+            .where((i) => i.id == widget.investment.id)
+            .first;
+        // print(e);
+        //widget.investment.earnings = e.earnings;
+        //setState(() {});
+      }); 
+      */
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    //print(widget.investment.earnings);
+    getBalance();
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: whiteColor,
         elevation: 0,
         title: Text(
-          '8omFfXp3AGG1pO1',
+          widget.investment.ref,
           style: TextStyle(color: secondaryColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon( Icons.keyboard_arrow_left, color: secondaryColor, ),
-          onPressed: (){
+          icon: Icon(
+            Icons.keyboard_arrow_left,
+            color: secondaryColor,
+          ),
+          onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
-      body: ListView(
-        padding: EdgeInsets.all(20.0),
-        physics: BouncingScrollPhysics(),
-        children: <Widget>[
-          /*InkWell(
+      body: Consumer<UserModel>(builder: (context, user, child) {
+        return Stack(children: [
+          body(user),
+          Widgets.loader(user),
+        ]);
+      }),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.replay),
+        onPressed: () {
+          //print('yes');
+          getEarnings(reload: true);
+        },
+        //mini: ,
+      ),
+    );
+  }
+
+  body(user) {
+    return ListView(
+      padding: EdgeInsets.all(20.0),
+      physics: BouncingScrollPhysics(),
+      children: <Widget>[
+        /*InkWell(
             onTap: () {
               showImagePreview(
                   context,
@@ -70,124 +163,166 @@ class _InvestmentState extends State<InvestmentWidget> {
               ]),
             ),
           ),*/
-          Container(
-            height: 90,
-            child: PageView.builder(
-              scrollDirection: Axis.horizontal,
-              physics: BouncingScrollPhysics(),
-              itemCount: balances.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: index % 2 != 0 ? primaryColor : secondaryColor,
-                  ),
-                  margin: EdgeInsets.symmetric(horizontal: 3.0),
-                  padding: EdgeInsets.all(15.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        FontAwesomeIcons.chartBar,
-                        color: Colors.white,
-                        size: 27,
-                      ),
-                      SizedBox(width: 30),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            balances[index]['title'],
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: whiteColor,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            Widgets.currency(balances[index]['value']),
-                            style: TextStyle(
-                              color: whiteColor,
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.w900,
-                              //shadows: Widgets.textShadows(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 25),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Widgets.statusCompleted(),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Text(
-                      'Estate Investment',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-                    ),
-                  ],
+        Container(
+          height: 90,
+          child: PageView.builder(
+            scrollDirection: Axis.horizontal,
+            physics: BouncingScrollPhysics(),
+            itemCount: balances.length,
+            itemBuilder: (context, index) {
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: index % 2 != 0 ? primaryColor : secondaryColor,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
+                margin: EdgeInsets.symmetric(horizontal: 3.0),
+                padding: EdgeInsets.all(15.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Icon(
+                      FontAwesomeIcons.chartBar,
+                      color: Colors.white,
+                      size: 27,
+                    ),
+                    SizedBox(width: 30),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('3 Months',
-                            style:
-                                TextStyle(fontSize: 15)),
-                        IconButton(
-                          icon: Icon( FontAwesomeIcons.externalLinkSquareAlt, size: 18, color: secondaryColor, ),
-                          onPressed: (){
-                            showImagePreview(
-                              context,
-                              FlutterLogo(
-                                colors: Colors.green,
-                              ));
-                          },
+                        Text(
+                          balances[index]['title'],
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: whiteColor,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          Widgets.currency(balances[index]['value']),
+                          style: TextStyle(
+                            color: whiteColor,
+                            fontSize: 19.0,
+                            fontWeight: FontWeight.w900,
+                            //shadows: Widgets.textShadows(),
+                          ),
                         ),
                       ],
                     ),
-                    Text( Widgets.currency(600000),
-                        style:
-                            TextStyle(fontSize: 25, fontWeight: FontWeight.w600)),
                   ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
-          SizedBox( height: 5,),
-          Text(
-            'Earnings',
-            style: TextStyle(
-                fontSize: 20, shadows: Widgets.textShadows(color: shyColor)),
-            textAlign: TextAlign.center,
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Widgets.status(widget.investment.activeStatus,
+                      widget.investment.isActive),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Text(
+                    '${Widgets.ucfirst(widget.investment.type)} Investment',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text('${widget.investment.duration} Months',
+                          style: TextStyle(fontSize: 15)),
+                      IconButton(
+                        icon: Icon(
+                          FontAwesomeIcons.externalLinkSquareAlt,
+                          size: 18,
+                          color: secondaryColor,
+                        ),
+                        onPressed: () {
+                          showImagePreview(
+                            context,
+                            Image.network(url + widget.investment.proofPic),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  Text(Widgets.currency(widget.investment.amount),
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.w600)),
+                ],
+              ),
+              /* Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    widget.investment.parentRoll == null
+                        ? Container()
+                        : RichText(
+                            text: TextSpan(
+                                text: '${widget.investment.ref} is rolled from',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text:
+                                          '${widget.investment.parentRoll.ref}',
+                                      style: TextStyle(
+                                          color: Colors.blueAccent,
+                                          fontSize: 18),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      InvestmentWidget(widget
+                                                          .investment
+                                                          .parentRoll)));
+                                        })
+                                ]),
+                          ),
+                  ]), */
+            ],
           ),
-          SizedBox(height: 30,),
-          Earnings(),
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        /*  Text(
+          'Earnings',
+          style: TextStyle(
+              fontSize: 20, shadows: Widgets.textShadows(color: shyColor)),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        Earnings(widget.investment.earnings), */
+        Widgets.toggleTabs({
+          'Earnings': Earnings(widget.investment.earnings),
+          'Payments': Payments(widget.investment.payments)
+        }, context, this),
+      ],
     );
   }
 }

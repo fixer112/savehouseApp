@@ -142,7 +142,9 @@ class Widgets {
                 builder: (context) => <Widget>[
                       Home(),
                       Invest(),
-                      Activity(),
+                      Consumer<UserModel>(builder: (context, user, child) {
+                        return Activity(user.user);
+                      }),
                       Account(),
                     ][ind]));
       },
@@ -158,7 +160,7 @@ class Widgets {
     ];
   }
 
-  static toggleTabs(Map<String, Investments> widgets, context, cls) {
+  static toggleTabs(Map<String, Widget> widgets, context, cls) {
     return Container(
       child: Column(
         children: <Widget>[
@@ -197,7 +199,9 @@ class Widgets {
                           //print(user.user.dynamicInvestments['all']);
                           cls.setState(() {
                             cls.current = index;
+                            //if (cls.) {
                             cls.type = key;
+                            //}
                           });
                         },
                       ),
@@ -306,6 +310,22 @@ class Widgets {
       Icons.arrow_downward,
       size: 20,
       color: dangerColor,
+    );
+  }
+
+  static ucfirst(String string) {
+    return string.replaceRange(0, 1, string.substring(0, 1).toUpperCase());
+  }
+
+  static floatReloadButton(action) {
+    return FloatingActionButton(
+      backgroundColor: secondaryColor,
+      child: Icon(Icons.replay),
+      onPressed: () {
+        //print(action().runtimeType);
+        action();
+      },
+      //mini: ,
     );
   }
 }

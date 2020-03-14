@@ -22,31 +22,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    /* balances.add({
-      'title': 'Total Investments',
-      'value': '525,000.00',
-    });
-    balances.add({
-      'title': 'Total Investments (Annual)',
-      'value': '525,000.00',
-    });
-    balances.add({
-      'title': 'Total Earnings (Monthly)',
-      'value': '181,500.00',
-    });
-    balances.add({
-      'title': 'Total Earnings (Annual)',
-      'value': '334,250.00',
-    });
-    balances.add({
-      'title': 'Total Investments (All Time)',
-      'value': '2,775,000.00',
-    });
-    balances.add({
-      'title': 'Total Earnings (All Time)',
-      'value': '1,013,500.00',
-    }); */
-
     super.initState();
   }
 
@@ -77,21 +52,28 @@ class _HomeState extends State<Home> {
     });
   }
 
-  getSums(User user) {
+  getSums(User user, {reload = false}) {
     balances = [];
     var investments = user.dynamicInvestments;
     //print(type);
 
     if (type == 'all') {
+      if (reload) {
+        user.getAllInvestments(context, _scaffoldKey);
+      }
       addBalance(investments[type]);
     } else {
       //var user = Provider.of<UserModel>(context, listen: false);
-      if (investments.containsKey(type)) {
+      if (investments.containsKey(type) && !reload) {
         addBalance(investments[type]);
         return;
       }
       user
-          .getTypeInvestments(context, _scaffoldKey, type, showLoad: false)
+          .getTypeInvestments(
+        context,
+        _scaffoldKey,
+        type, /* showLoad: false */
+      )
           .then((i) {
         setState(() {
           addBalance(i[type]);
@@ -117,6 +99,11 @@ class _HomeState extends State<Home> {
             body(user),
             Widgets.loader(user),
           ]);
+        }),
+        floatingActionButton:
+            Consumer<UserModel>(builder: (context, user, child) {
+          return Widgets.floatReloadButton(
+              () => getSums(user.user, reload: true));
         }),
         bottomNavigationBar: Widgets.bottomNav(0, context),
       ),

@@ -53,6 +53,7 @@ request(Response response, Function action, context, GlobalKey _scaffoldKey) {
     }
     action();
   } else {
+    print(body);
     return snackbar(
         'An error occured, Please try later.', context, _scaffoldKey);
   }

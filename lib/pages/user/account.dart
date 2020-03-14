@@ -30,7 +30,7 @@ class _AccountState extends State<Account> {
                   backgroundImage: NetworkImage(url + user.user.profilePic)),
             );
           }),
-          Container(
+          /*  Container(
             margin: EdgeInsets.symmetric(vertical: 20.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -45,8 +45,8 @@ class _AccountState extends State<Account> {
                   ),
                   fit: BoxFit.cover),
             ),
-          ),
-          SizedBox(height: 40),
+          ), */
+          /* SizedBox(height: 40),
           Row(
             children: <Widget>[
               Expanded(
@@ -103,7 +103,7 @@ class _AccountState extends State<Account> {
                 ),
               ),
             ],
-          ),
+          ), */
           SizedBox(height: 40),
           Column(
             children: <Widget>[
@@ -112,7 +112,7 @@ class _AccountState extends State<Account> {
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                 margin: EdgeInsets.only(bottom: 15.0),
                 decoration: BoxDecoration(
-                  border: Border.all(color: whiteColor),
+                  border: Border.all(color: shyColor),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: ListTile(
@@ -138,7 +138,7 @@ class _AccountState extends State<Account> {
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                 margin: EdgeInsets.only(bottom: 15.0),
                 decoration: BoxDecoration(
-                  border: Border.all(color: whiteColor),
+                  border: Border.all(color: shyColor),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: ListTile(
