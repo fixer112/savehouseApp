@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:savehouse/pages/auth/login.dart';
 
 import '../values.dart';
+import 'auth/login.dart';
 
 Widget splashScreen() {
   return MaterialApp(
@@ -24,12 +24,11 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-
     Loading();
   }
 
   Future<Timer> Loading() async {
-    return Timer(Duration(seconds: 0), onDoneLoading);
+    return Timer(Duration(seconds: 2), onDoneLoading);
   }
 
   onDoneLoading() async {

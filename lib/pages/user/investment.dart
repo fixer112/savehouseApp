@@ -1,15 +1,14 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:savehouse/models/investment.dart';
-import 'package:savehouse/pages/widgets/imagepreview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:savehouse/pages/widgets/payments.dart';
-import 'package:savehouse/providers/user.dart';
-import 'package:savehouse/widgets.dart';
-import 'package:savehouse/pages/widgets/earnings.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/investment.dart';
+import '../../providers/user.dart';
 import '../../values.dart';
+import '../../widgets.dart';
+import '../widgets/earnings.dart';
+import '../widgets/imagepreview.dart';
+import '../widgets/payments.dart';
 
 class InvestmentWidget extends StatefulWidget {
   Investment investment;
@@ -74,6 +73,7 @@ class _InvestmentState extends State<InvestmentWidget> {
     if (widget.investment.earnings.isEmpty || reload) {
       await widget.investment.getAllEarnings(context, _scaffoldKey);
       print(widget.investment.payments);
+      getBalance();
       /*  .then((e) {
         //var user = Provider.of<UserModel>(context, listen: false);
          Investment invest = user.user.investments
@@ -308,16 +308,6 @@ class _InvestmentState extends State<InvestmentWidget> {
         SizedBox(
           height: 5,
         ),
-        /*  Text(
-          'Earnings',
-          style: TextStyle(
-              fontSize: 20, shadows: Widgets.textShadows(color: shyColor)),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        Earnings(widget.investment.earnings), */
         Widgets.toggleTabs({
           'Earnings': Earnings(widget.investment.earnings),
           'Payments': Payments(widget.investment.payments)

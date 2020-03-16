@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:savehouse/widgets.dart';
 
 final String url = 'https://savehouse.altechtic.com';
 

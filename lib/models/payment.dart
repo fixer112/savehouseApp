@@ -1,5 +1,3 @@
-import 'package:savehouse/models/investment.dart';
-
 class Payment {
   final int id;
   final int investmentId;

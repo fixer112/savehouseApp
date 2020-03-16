@@ -1,15 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:savehouse/pages/auth/register.dart';
-import 'package:savehouse/pages/home.dart';
-import 'package:savehouse/providers/main.dart';
-import 'package:savehouse/providers/user.dart';
-import 'package:savehouse/widgets.dart';
-import 'package:savehouse/widgets.dart';
 
+import '../../providers/user.dart';
 import '../../values.dart';
+import '../../widgets.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -101,10 +95,10 @@ class _LoginState extends State<Login> {
 
                     t.cancel();
                   }); */
-            user.login('user', 'abula112', context, _scaffoldKey);
+            user.login(username.text, password.text, context, _scaffoldKey);
           },
         ),
-        InkWell(
+        /* InkWell(
           child: Container(
             padding: EdgeInsets.all(20.0),
             alignment: Alignment.center,
@@ -119,7 +113,7 @@ class _LoginState extends State<Login> {
                 MaterialPageRoute(
                     builder: (BuildContext context) => Register()));
           },
-        ),
+        ), */
       ],
     );
   }

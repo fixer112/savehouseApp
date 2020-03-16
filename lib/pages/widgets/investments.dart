@@ -1,13 +1,11 @@
-import 'dart:math';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:savehouse/models/investment.dart';
-import 'package:savehouse/pages/user/investment.dart';
-import 'package:savehouse/pages/widgets/imagepreview.dart';
-import 'package:savehouse/values.dart';
-import 'package:savehouse/widgets.dart';
+
+import '../../models/investment.dart';
+import '../../values.dart';
+import '../../widgets.dart';
+import '../user/investment.dart';
+import 'imagepreview.dart';
 
 class Investments extends StatefulWidget {
   final List<Investment> investments;

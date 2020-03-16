@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:savehouse/models/user.dart';
 import 'dart:convert';
-import 'package:savehouse/globals.dart';
-import 'package:savehouse/pages/home.dart';
-import 'package:savehouse/providers/user.dart';
+
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:savehouse/values.dart';
+import 'package:provider/provider.dart';
+
+import '../globals.dart';
+import '../models/user.dart';
+import '../pages/home.dart';
+import '../values.dart';
 
 class UserModel extends ChangeNotifier {
   User user;
@@ -28,7 +29,7 @@ class UserModel extends ChangeNotifier {
 
   setLoading(bool value) {
     _isLoading = value;
-    notifyListeners();
+    Future.delayed(Duration(seconds: 1), () => notifyListeners());
   }
 
   bool get isloading => _isLoading;
@@ -40,11 +41,12 @@ class UserModel extends ChangeNotifier {
   Future login(
       String username, String password, context, GlobalKey _scaffoldKey) async {
     var user = Provider.of<UserModel>(context, listen: false);
+    print(url);
     //var user = Provider.of<UserModel>(context);
     try {
       user.setLoading(true);
       //print('loading');
-      final response = await http.post('${user.hostUrl}/api/login', body: {
+      final response = await http.post('${url}/api/login', body: {
         'username': username,
         'password': password,
       }, headers: {
@@ -64,7 +66,7 @@ class UserModel extends ChangeNotifier {
       }, context, _scaffoldKey);
     } catch (e) {
       user.setLoading(false);
-      print(e.message);
+      print(e);
       //snackbar(e.message(), context, _scaffoldKey);
       return snackbar(connErrorMsg, context, _scaffoldKey);
     }

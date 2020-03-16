@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:savehouse/globals.dart';
-import 'package:savehouse/providers/main.dart';
-import 'package:savehouse/providers/user.dart';
-import 'package:http/http.dart' as http;
+
+import 'providers/user.dart';
 
 void main() => runApp(MyApp());
 

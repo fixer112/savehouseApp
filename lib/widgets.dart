@@ -1,22 +1,20 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:savehouse/globals.dart';
-import 'package:savehouse/models/user.dart';
-import 'package:savehouse/pages/home.dart';
-import 'package:savehouse/pages/user/account.dart';
-import 'package:savehouse/pages/user/activity.dart';
-import 'package:savehouse/pages/user/invest.dart';
-import 'package:savehouse/pages/widgets/editprofile.dart';
-import 'package:savehouse/pages/widgets/investments.dart';
-import 'package:savehouse/providers/user.dart';
 
+import 'pages/home.dart';
+import 'pages/user/account.dart';
+import 'pages/user/activity.dart';
+import 'pages/user/invest.dart';
+import 'pages/widgets/editprofile.dart';
+import 'providers/user.dart';
 import 'values.dart';
 
 class Widgets {
   static textField(
-      TextEditingController controller, String hintText, TextInputType type) {
+      TextEditingController controller, String hintText, TextInputType type,
+      {bool enabled = true}) {
     return Container(
       height: 40.0,
       margin: EdgeInsets.only(top: 10.0),
@@ -27,6 +25,7 @@ class Widgets {
               filled: true,
               border:
                   OutlineInputBorder(borderSide: BorderSide(color: shyColor)),
+              enabled: enabled,
               hintText: hintText,
               contentPadding: EdgeInsets.all(10),
               hintStyle: TextStyle(
@@ -212,16 +211,24 @@ class Widgets {
             ),
           ),
           SizedBox(height: 10),
-          Row(
-            children: List.generate(widgets.length, (index) {
-              var value = widgets.values.toList()[index];
-              return index == cls.current
-                  ? Expanded(
-                      child: Container(child: value),
-                    )
-                  : Container();
-            }),
-          ),
+          widgets.length < 1
+              ? Text(
+                  'No Investment Available',
+                  style: TextStyle(
+                      fontSize: 20,
+                      shadows: Widgets.textShadows(color: shyColor)),
+                  textAlign: TextAlign.center,
+                )
+              : Row(
+                  children: List.generate(widgets.length, (index) {
+                    var value = widgets.values.toList()[index];
+                    return index == cls.current
+                        ? Expanded(
+                            child: Container(child: value),
+                          )
+                        : Container();
+                  }),
+                ),
         ],
       ),
     );

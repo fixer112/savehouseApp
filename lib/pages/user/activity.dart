@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:savehouse/models/investment.dart';
-import 'package:savehouse/models/user.dart';
-import 'package:savehouse/providers/user.dart';
-import 'package:savehouse/values.dart';
-import 'package:savehouse/widgets.dart';
+
+import '../../models/user.dart';
+import '../../providers/user.dart';
+import '../../values.dart';
+import '../../widgets.dart';
 
 class Activity extends StatefulWidget {
   User user;

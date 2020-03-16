@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:savehouse/pages/home.dart';
 
-import '../../values.dart';
+import '../home.dart';
 
 class Registered extends StatefulWidget {
   @override
@@ -22,7 +21,7 @@ class _RegisteredState extends State<Registered> {
             right: 0,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical( top: Radius.circular(25) ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
                 color: Colors.white,
               ),
               padding: EdgeInsets.all(20.0),
@@ -33,22 +32,41 @@ class _RegisteredState extends State<Registered> {
                   children: <Widget>[
                     SizedBox(height: 30),
                     SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: FlutterLogo( colors: Colors.green, )
-                    ),
+                        height: 100,
+                        width: 100,
+                        child: FlutterLogo(
+                          colors: Colors.green,
+                        )),
                     SizedBox(height: 70.0),
-                    Text( 'Registeration\nSuccessful!', style: TextStyle( fontSize: 27.0, fontWeight: FontWeight.bold, fontFamily: 'calibri' ), textAlign: TextAlign.center, ),
+                    Text(
+                      'Registeration\nSuccessful!',
+                      style: TextStyle(
+                          fontSize: 27.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'calibri'),
+                      textAlign: TextAlign.center,
+                    ),
                     SizedBox(height: 15),
-                    Text( 'User Registered', style: TextStyle( fontSize: 12, ), textAlign: TextAlign.center, ),
+                    Text(
+                      'User Registered',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                     SizedBox(height: 40),
                     FlatButton(
                       color: Colors.green,
-                      child: Text( 'LET\'S GET STARTED', style: TextStyle( fontSize: 12.0, fontWeight: FontWeight.bold ), ),
-                      onPressed: (){
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (BuildContext context) => Home()
-                        ));
+                      child: Text(
+                        'LET\'S GET STARTED',
+                        style: TextStyle(
+                            fontSize: 12.0, fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => Home()));
                       },
                     ),
                   ],
@@ -62,7 +80,7 @@ class _RegisteredState extends State<Registered> {
   }
 }
 
-void showRegisteredWidget( context ){
+void showRegisteredWidget(context) {
   showDialog(
     context: context,
     builder: (context) => Registered(),

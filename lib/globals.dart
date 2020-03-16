@@ -1,11 +1,55 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
+import 'package:savehouse/values.dart';
 
 final String connErrorMsg = 'Connection Failed';
 
+dialog(BuildContext context, String title, String body) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return AlertDialog(
+        title: new Text("Alert Dialog title"),
+        content: new Text("Alert Dialog body"),
+        actions: <Widget>[
+          // usually buttons at the bottom of the dialog
+          new FlatButton(
+            child: new Text("Close"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+toast() {
+  Fluttertoast.showToast(
+      msg: 'test',
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIos: 5,
+      backgroundColor: secondaryColor,
+      textColor: Colors.white,
+      fontSize: 16.0);
+}
+
 snackbar(text, BuildContext context, _scaffoldKey, {seconds = 5}) {
+  /*  Fluttertoast.showToast(
+      msg: text,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIos: 5,
+      backgroundColor: secondaryColor,
+      textColor: Colors.white,
+      fontSize: 16.0); */
+
   final snack =
       SnackBar(content: Text(text), duration: Duration(seconds: seconds));
   _scaffoldKey.currentState.removeCurrentSnackBar();
@@ -44,12 +88,13 @@ request(Response response, Function action, context, GlobalKey _scaffoldKey) {
     body['errors'].forEach((error, data) => errors += '${data[0]}\n');
     return snackbar(errors, context, _scaffoldKey);
   }
+
   if (response.statusCode == 200) {
     if (body.containsKey('error')) {
-      return snackbar(body['error'], context, _scaffoldKey);
+      snackbar(body['error'], context, _scaffoldKey);
     }
     if (body.containsKey('success')) {
-      return snackbar(body['success'], context, _scaffoldKey);
+      snackbar(body['success'], context, _scaffoldKey);
     }
     action();
   } else {
@@ -57,4 +102,42 @@ request(Response response, Function action, context, GlobalKey _scaffoldKey) {
     return snackbar(
         'An error occured, Please try later.', context, _scaffoldKey);
   }
+}
+
+request2(String string, int statusCode, Function action, context,
+    GlobalKey _scaffoldKey) {
+  print(statusCode);
+  var body = json.decode(string);
+  //print(body);
+
+  if (statusCode == 422) {
+    var errors = '';
+    body['errors'].forEach((error, data) => errors += '${data[0]}\n');
+    return snackbar(errors, context, _scaffoldKey);
+  }
+
+  if (statusCode == 200) {
+    if (body.containsKey('error')) {
+      snackbar(body['error'], context, _scaffoldKey);
+    }
+    if (body.containsKey('success')) {
+      snackbar(body['success'], context, _scaffoldKey);
+    }
+    action();
+  } else {
+    print(body);
+    return snackbar(
+        'An error occured, Please try later.', context, _scaffoldKey);
+  }
+}
+
+String greeting() {
+  var hour = DateTime.now().hour;
+  if (hour < 12) {
+    return 'Morning';
+  }
+  if (hour < 17) {
+    return 'Afternoon';
+  }
+  return 'Evening';
 }

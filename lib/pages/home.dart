@@ -1,13 +1,16 @@
-import 'dart:math';
+import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:savehouse/models/user.dart';
-import 'package:savehouse/pages/widgets/investments.dart';
-import 'package:savehouse/providers/user.dart';
-import 'package:savehouse/values.dart';
-import 'package:savehouse/widgets.dart';
+import 'package:savehouse/globals.dart';
+
+import '../models/user.dart';
+import '../providers/user.dart';
+import '../values.dart';
+import '../widgets.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -19,10 +22,24 @@ class _HomeState extends State<Home> {
   List<Map> balances = [];
   String type = 'all';
   final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
   @override
   void initState() {
     super.initState();
+
+    var user = Provider.of<UserModel>(context, listen: false);
+    firebaseMessaging.getToken().then((token) async {
+      print('FCM Token: $token');
+      var response = await http.post(
+          '$url/api/user/${user.user.id}/update_token?api_token=${user.user.apiToken}',
+          body: {
+            'app_token': token,
+          },
+          headers: {
+            'Accept': 'application/json',
+          });
+      print(json.decode(response.body));
+    });
   }
 
   addBalance(investment) {
@@ -117,7 +134,7 @@ class _HomeState extends State<Home> {
       children: <Widget>[
         Widgets.pageTitle(
           '${user.user.firstname},',
-          'Good Morning',
+          'Good ' + greeting(),
           context: context,
           image: CircleAvatar(
               backgroundImage: NetworkImage(url + user.user.profilePic)),

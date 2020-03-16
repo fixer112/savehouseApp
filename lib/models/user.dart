@@ -1,15 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:savehouse/models/activity.dart';
-import 'package:savehouse/models/investment.dart';
 import 'package:http/http.dart' as http;
-import 'package:savehouse/pages/widgets/investments.dart';
-import 'package:savehouse/providers/user.dart';
-import 'package:savehouse/providers/user.dart';
+import 'package:provider/provider.dart';
 
 import '../globals.dart';
+import '../pages/widgets/investments.dart';
+import '../providers/user.dart';
+import 'activity.dart';
+import 'investment.dart';
 
 class User {
   final int id;
@@ -47,10 +46,6 @@ class User {
   });
 
   factory User.fromMap(Map data) {
-    /* var d = data['investments'].map((i) {
-      return Investment.fromMap(i);
-    }).toList();
-    print(List<Investment>.from(d).runtimeType); */
     return User(
       id: data['id'],
       username: data['username'],
@@ -63,9 +58,6 @@ class User {
       profilePic: data['profile_pic'],
       createdAt: DateTime.parse(data['created_at']) ?? null,
       activities: [],
-      /* investments: List<Investment>.from(
-          data['investments'].map((i) => Investment.fromMap(i)).toList()),
-       */ //appToken: data['app_token'],
     );
   }
 
@@ -82,8 +74,13 @@ class User {
       var body = json.decode(response.body).containsKey('data')
           ? json.decode(response.body)['data']
           : json.decode(response.body);
-      request(response, () => user.setUser(User.fromMap(body)), context,
-          _scaffoldKey);
+      print(body);
+      request(response, () async {
+        user.setUser(User.fromMap(body));
+        user.user.settings = body['settings'];
+        await user.user.getAllInvestments(context, _scaffoldKey);
+        // this.getAllInvestments(context, _scaffoldKey);
+      }, context, _scaffoldKey);
     } catch (e) {
       user.setLoading(false);
       snackbar(connErrorMsg, context, _scaffoldKey);
