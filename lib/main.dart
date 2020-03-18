@@ -71,6 +71,9 @@ void main() {
   firebaseMessaging.getToken().then((token) {
     print('FCM Token: $token');
   });
+
+  firebaseMessaging.subscribeToTopic('global');
+
   return runApp(
     MultiProvider(
       providers: [
