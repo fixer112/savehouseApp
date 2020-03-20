@@ -1,9 +1,13 @@
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/user.dart';
 import '../../values.dart';
 import '../../widgets.dart';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   @override
@@ -13,8 +17,29 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   var username = TextEditingController();
   var password = TextEditingController();
+
   //var loading = false;
   final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    super.initState();
+    var user = Provider.of<UserModel>(context, listen: false);
+    if (user.user != null) {
+      FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+      firebaseMessaging.getToken().then((token) async {
+        print('FCM Token: $token');
+        var response = await http.post(
+            '$url/api/user/${user.user.id}/remove_token?api_token=${user.user.apiToken}',
+            body: {
+              'app_token': token,
+            },
+            headers: {
+              'Accept': 'application/json',
+            });
+        print(json.decode(response.body));
+      });
+    }
+  }
 
   @override
   Widget build(context) {
