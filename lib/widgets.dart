@@ -12,6 +12,18 @@ import 'providers/user.dart';
 import 'values.dart';
 
 class Widgets {
+  static dropItem(String text, String value) {
+    return DropdownMenuItem<String>(
+      child: Row(
+        children: <Widget>[
+          //Icon(Icons.filter_1),
+          Text(text),
+        ],
+      ),
+      value: value,
+    );
+  }
+
   static textField(
       TextEditingController controller, String hintText, TextInputType type,
       {bool enabled = true}) {
@@ -295,7 +307,7 @@ class Widgets {
     return '₦' + f.format(number); //globals.formatCurrency.format(number);
   }
 
-  static loader(user) {
+  static loader(UserModel user) {
     return user.isloading
         ? Center(
             child: CircularProgressIndicator(

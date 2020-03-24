@@ -78,6 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.12"
+  firebase_remote_config:
+    dependency: "direct main"
+    description:
+      name: firebase_remote_config
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0+3"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -111,6 +118,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  flutter_paystack:
+    dependency: "direct main"
+    description:
+      name: flutter_paystack
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3+1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -249,6 +263,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+  random_string:
+    dependency: "direct main"
+    description:
+      name: random_string
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   sky_engine:
     dependency: transitive
     description: flutter

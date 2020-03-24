@@ -26,12 +26,31 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-
     var user = Provider.of<UserModel>(context, listen: false);
+
+    /* if (user.user != null) {
+      final QuickActions quickActions = QuickActions();
+      quickActions.initialize((shortcutType) {
+        if (shortcutType == 'action_main') {
+          print('The user tapped on the "Main view" action.');
+        }
+        // More handling code...
+      });
+
+      quickActions.setShortcutItems(<ShortcutItem>[
+        const ShortcutItem(
+            type: 'action_main',
+            localizedTitle: 'Main view',
+            icon: 'icon_main'),
+        const ShortcutItem(
+            type: 'action_help', localizedTitle: 'Help', icon: 'icon_help')
+      ]);
+    }
+ */
     firebaseMessaging.getToken().then((token) async {
       print('FCM Token: $token');
       var response = await http.post(
-          '$url/api/user/${user.user.id}/update_token?api_token=${user.user.apiToken}',
+          '${user.hostUrl}/api/user/${user.user.id}/update_token?api_token=${user.user.apiToken}',
           body: {
             'app_token': token,
           },
@@ -72,7 +91,7 @@ class _HomeState extends State<Home> {
   getSums(User user, {reload = false}) {
     balances = [];
     var investments = user.dynamicInvestments;
-    //print(type);
+    //print(user.apiToken);
 
     if (type == 'all') {
       if (reload) {
@@ -109,25 +128,28 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        key: _scaffoldKey,
-        body: Consumer<UserModel>(builder: (context, user, child) {
-          return Stack(children: [
-            body(user),
-            Widgets.loader(user),
-          ]);
-        }),
-        floatingActionButton:
-            Consumer<UserModel>(builder: (context, user, child) {
-          return Widgets.floatReloadButton(
-              () => getSums(user.user, reload: true));
-        }),
-        bottomNavigationBar: Widgets.bottomNav(0, context),
+      home: WillPopScope(
+        onWillPop: () => Future.value(false),
+        child: Scaffold(
+          key: _scaffoldKey,
+          body: Consumer<UserModel>(builder: (context, user, child) {
+            return Stack(children: [
+              body(user),
+              Widgets.loader(user),
+            ]);
+          }),
+          floatingActionButton:
+              Consumer<UserModel>(builder: (context, user, child) {
+            return Widgets.floatReloadButton(
+                () => getSums(user.user, reload: true));
+          }),
+          bottomNavigationBar: Widgets.bottomNav(0, context),
+        ),
       ),
     );
   }
 
-  body(user) {
+  body(UserModel user) {
     getSums(user.user);
     return ListView(
       padding: EdgeInsets.all(20.0),
@@ -137,7 +159,8 @@ class _HomeState extends State<Home> {
           'Good ' + greeting(),
           context: context,
           image: CircleAvatar(
-              backgroundImage: NetworkImage(url + user.user.profilePic)),
+              backgroundImage:
+                  NetworkImage(user.hostUrl + user.user.profilePic)),
         ),
         SizedBox(height: 20),
         Container(

@@ -27,7 +27,8 @@ class _AccountState extends State<Account> {
               icon: 1,
               context: context,
               image: CircleAvatar(
-                  backgroundImage: NetworkImage(url + user.user.profilePic)),
+                  backgroundImage:
+                      NetworkImage(user.hostUrl + user.user.profilePic)),
             );
           }),
           SizedBox(height: 40),

@@ -63,7 +63,6 @@ class _InvestmentState extends State<InvestmentWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getEarnings();
   }
@@ -258,7 +257,8 @@ class _InvestmentState extends State<InvestmentWidget> {
                         onPressed: () {
                           showImagePreview(
                             context,
-                            Image.network(url + widget.investment.proofPic),
+                            Image.network(
+                                user.hostUrl + widget.investment.proofPic),
                           );
                         },
                       ),

@@ -89,6 +89,7 @@ class User {
 
   Future getAllInvestments(BuildContext context, GlobalKey _scaffoldKey) async {
     var user = Provider.of<UserModel>(context, listen: false);
+    print(user.hostUrl);
     try {
       //var user = Provider.of<UserModel>(context);
       user.setLoading(true);
@@ -109,7 +110,7 @@ class User {
       }, context, _scaffoldKey);
     } catch (e) {
       user.setLoading(false);
-      print(e.message);
+      print(e);
       snackbar(connErrorMsg, context, _scaffoldKey);
     }
   }

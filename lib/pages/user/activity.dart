@@ -64,7 +64,8 @@ class _ActivityState extends State<Activity> {
           'monitor your account from here',
           context: context,
           image: CircleAvatar(
-              backgroundImage: NetworkImage(url + user.user.profilePic)),
+              backgroundImage:
+                  NetworkImage(user.hostUrl + user.user.profilePic)),
         ),
         SizedBox(height: 10),
         Container(

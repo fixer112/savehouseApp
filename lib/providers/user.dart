@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -11,13 +12,24 @@ import '../values.dart';
 
 class UserModel extends ChangeNotifier {
   User user;
+  RemoteConfig _config;
   bool _loggedIn = false;
   bool _isLoading = false;
-  final String hostUrl = url;
+  String hostUrl;
 
   setUser(User newUser) {
     user = newUser;
     notifyListeners();
+  }
+
+  setConfig(RemoteConfig config) {
+    _config = config;
+    setUrl();
+    notifyListeners();
+  }
+
+  setUrl() {
+    hostUrl = _config.getString('url');
   }
 
   User get getUser => user;
@@ -41,12 +53,12 @@ class UserModel extends ChangeNotifier {
   Future login(
       String username, String password, context, GlobalKey _scaffoldKey) async {
     var user = Provider.of<UserModel>(context, listen: false);
-    print(url);
+    //print(user);
     //var user = Provider.of<UserModel>(context);
     try {
       user.setLoading(true);
       //print('loading');
-      final response = await http.post('${url}/api/login', body: {
+      final response = await http.post('${user.hostUrl}/api/login', body: {
         'username': username,
         'password': password,
       }, headers: {

@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
+import 'package:savehouse/providers/user.dart';
 import 'package:savehouse/values.dart';
 
 final String connErrorMsg = 'Connection Failed';
@@ -81,7 +84,7 @@ alert(context, {title = '', content}) {
 request(Response response, Function action, context, GlobalKey _scaffoldKey) {
   print(response.statusCode);
   var body = json.decode(response.body);
-  //print(body);
+  print(body);
 
   if (response.statusCode == 422) {
     var errors = '';
@@ -98,7 +101,7 @@ request(Response response, Function action, context, GlobalKey _scaffoldKey) {
     }
     action();
   } else {
-    print(body);
+    //print(body);
     return snackbar(
         'An error occured, Please try later.', context, _scaffoldKey);
   }
@@ -140,4 +143,34 @@ String greeting() {
     return 'Afternoon';
   }
   return 'Evening';
+}
+
+closeKeybord(BuildContext context) {
+  FocusScopeNode currentFocus = FocusScope.of(context);
+
+  if (!currentFocus.hasPrimaryFocus) {
+    currentFocus.unfocus();
+  }
+}
+
+getConfig(BuildContext context) async {
+  var user = Provider.of<UserModel>(context, listen: false);
+  final RemoteConfig remoteConfig = await RemoteConfig.instance;
+  final defaults = <String, dynamic>{
+    'url': 'http://client.safehousecapital.ng'
+  };
+  remoteConfig.setConfigSettings(RemoteConfigSettings(debugMode: true));
+  await remoteConfig.setDefaults(defaults);
+
+  try {
+    await remoteConfig.fetch(expiration: Duration(seconds: 0));
+    await remoteConfig.activateFetched();
+  } catch (e) {
+    print(e);
+  }
+  user.setConfig(remoteConfig);
+  print('welcome message: ' + user.hostUrl);
+
+  // print(remoteConfig);
+  //return remoteConfig;
 }

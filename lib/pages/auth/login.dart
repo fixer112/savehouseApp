@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:savehouse/globals.dart';
 
 import '../../providers/user.dart';
 import '../../values.dart';
@@ -24,12 +25,13 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     var user = Provider.of<UserModel>(context, listen: false);
+    getConfig(context);
     if (user.user != null) {
       FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
       firebaseMessaging.getToken().then((token) async {
         print('FCM Token: $token');
         var response = await http.post(
-            '$url/api/user/${user.user.id}/remove_token?api_token=${user.user.apiToken}',
+            '${user.hostUrl}/api/user/${user.user.id}/remove_token?api_token=${user.user.apiToken}',
             body: {
               'app_token': token,
             },
@@ -45,20 +47,23 @@ class _LoginState extends State<Login> {
   Widget build(context) {
     //var main = Provider.of<MainModel>(context, listen: false);
     return MaterialApp(
-      home: Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Colors.white,
-        body: Consumer<UserModel>(builder: (context, user, child) {
-          return Stack(children: [
-            listLogin(user),
-            Widgets.loader(user),
-          ]);
-        }),
+      home: WillPopScope(
+        onWillPop: () => Future.value(false),
+        child: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: Colors.white,
+          body: Consumer<UserModel>(builder: (context, user, child) {
+            return Stack(children: [
+              listLogin(user),
+              Widgets.loader(user),
+            ]);
+          }),
+        ),
       ),
     );
   }
 
-  listLogin(user) {
+  listLogin(UserModel user) {
     return ListView(
       padding: EdgeInsets.all(20.0),
       children: <Widget>[
@@ -110,17 +115,10 @@ class _LoginState extends State<Login> {
             style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
           ),
           onPressed: () async {
-            /* user.setLoading(true);
-                  Timer.periodic(Duration(seconds: 2), (t) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => Home()));
-                    user.setLoading(false);
-
-                    t.cancel();
-                  }); */
-            user.login(username.text, password.text, context, _scaffoldKey);
+            if (!user.isloading) {
+              user.login(username.text, password.text, context, _scaffoldKey);
+            }
+            closeKeybord(context);
           },
         ),
         /* InkWell(

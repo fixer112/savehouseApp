@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -150,8 +149,8 @@ class _EditProfileState extends State<EditProfile> {
                                         _image)  */
                                   CircleAvatar(
                                       backgroundImage: _image == null
-                                          ? NetworkImage(
-                                              url + user.user.profilePic)
+                                          ? NetworkImage(user.hostUrl +
+                                              user.user.profilePic)
                                           : FileImage(_image)),
                             ),
                           ),

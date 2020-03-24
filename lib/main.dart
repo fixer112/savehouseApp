@@ -1,7 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'values.dart';
 
 import 'pages/splashcreen.dart';
 import 'providers/main.dart';
@@ -45,6 +47,7 @@ Future bgMsgHdl(Map<String, dynamic> message) async {
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  //getConfig();
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
   firebaseMessaging.requestNotificationPermissions();
 

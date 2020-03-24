@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final String url = 'https://savehouse.altechtic.com';
+//String url;
 
 Color primaryColor = Color(0xff020d36b);
 MaterialColor primarySwatch = MaterialColor(0xff020d36b, color);

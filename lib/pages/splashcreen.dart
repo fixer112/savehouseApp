@@ -24,10 +24,10 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    Loading();
+    loading();
   }
 
-  Future<Timer> Loading() async {
+  Future<Timer> loading() async {
     return Timer(Duration(seconds: 2), onDoneLoading);
   }
 

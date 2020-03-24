@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:savehouse/providers/user.dart';
 
 import '../../models/investment.dart';
 import '../../values.dart';
@@ -19,19 +21,21 @@ class _InvestmentsState extends State<Investments> {
   Widget build(BuildContext context) {
     //print(widget.investments[0]);
     List<Investment> investments = widget.investments;
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: List.generate(investments.length, (index) {
-          //var key = investments.keys.toList()[index];
-          return investmentEach(context, investments[index]);
-        }),
-      ),
-    );
+    return Consumer<UserModel>(builder: (context, user, child) {
+      return Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: List.generate(investments.length, (index) {
+            //var key = investments.keys.toList()[index];
+            return investmentEach(context, investments[index], user);
+          }),
+        ),
+      );
+    });
   }
 }
 
-Widget investmentEach(context, Investment investment) {
+Widget investmentEach(context, Investment investment, UserModel user) {
   //print(url + investment.proofPic);
   return Container(
     decoration: BoxDecoration(
@@ -46,14 +50,14 @@ Widget investmentEach(context, Investment investment) {
             height: 90,
             width: 90,
             child: FittedBox(
-              child: Image.network(url + investment.proofPic),
+              child: Image.network(user.hostUrl + investment.proofPic),
               fit: BoxFit.cover,
             ),
           ),
           onTap: () {
             showImagePreview(
               context,
-              Image.network(url + investment.proofPic),
+              Image.network(user.hostUrl + investment.proofPic),
             );
           },
         ),
