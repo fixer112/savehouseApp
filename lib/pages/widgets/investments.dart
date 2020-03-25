@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:savehouse/providers/user.dart';
 
@@ -63,11 +64,7 @@ Widget investmentEach(context, Investment investment, UserModel user) {
         ),
         InkWell(
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        InvestmentWidget(investment)));
+            Get.to(InvestmentWidget(investment));
           },
           child: Container(
             padding: EdgeInsets.all(15.0),

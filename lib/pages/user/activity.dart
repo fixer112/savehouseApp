@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -49,7 +50,9 @@ class _ActivityState extends State<Activity> {
         ]);
       }),
       floatingActionButton: //Container(),
-          Widgets.floatReloadButton(() => getActivitys(reload: true)),
+          Widgets.floatReloadButton(() {
+        getActivitys(reload: true);
+      }),
       bottomNavigationBar: Widgets.bottomNav(2, context),
     );
   }

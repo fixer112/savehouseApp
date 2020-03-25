@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../values.dart';
 import 'auth/login.dart';
+import '../globals.dart';
+import 'package:path/path.dart';
 
 Widget splashScreen() {
   return MaterialApp(
@@ -24,6 +27,12 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
+    // var t= Timer(Duration(seconds: 10), Get.to(Splash()));
+    /* Future.delayed(Duration(seconds: 20), () {
+      getSnack('Timeout', 'You are forced to re-login after 20 minutes');
+      Get.to(Login());
+    }); */
+
     loading();
   }
 
@@ -32,8 +41,7 @@ class _SplashState extends State<Splash> {
   }
 
   onDoneLoading() async {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (BuildContext context) => Login()));
+    Get.off(Login());
   }
 
   @override

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:savehouse/globals.dart';
 
@@ -115,7 +116,11 @@ class _LoginState extends State<Login> {
             style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
           ),
           onPressed: () async {
+            getConfig(context);
             if (!user.isloading) {
+              if ([username.text, password.text].contains('')) {
+                return getSnack('Error', 'All inputs required');
+              }
               user.login(username.text, password.text, context, _scaffoldKey);
             }
             closeKeybord(context);
@@ -131,10 +136,7 @@ class _LoginState extends State<Login> {
             ),
           ),
           onTap: () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => Register()));
+            
           },
         ), */
       ],

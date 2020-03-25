@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 //import 'package:image_picker_modern/image_picker_modern.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,8 @@ class EditProfile extends StatefulWidget {
   _EditProfileState createState() => _EditProfileState();
 }
 
-class _EditProfileState extends State<EditProfile> {
+class _EditProfileState extends State<EditProfile>
+    with SingleTickerProviderStateMixin {
   var username = TextEditingController();
   var firstName = TextEditingController();
   var lastName = TextEditingController();
@@ -30,6 +32,9 @@ class _EditProfileState extends State<EditProfile> {
   var loading = false;
   final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
   File _image;
+
+  Animation<double> animation;
+  AnimationController controller;
 
   Future getImage() async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -101,8 +106,29 @@ class _EditProfileState extends State<EditProfile> {
     } catch (e) {
       user.setLoading(false);
       print(e);
-      snackbar(connErrorMsg, context, _scaffoldKey);
+      getSnack('Error', connErrorMsg);
+      //snackbar(connErrorMsg, context, _scaffoldKey);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 800));
+    animation = Tween<double>(begin: 0, end: 410).animate(controller)
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((status) {
+        /*  if (status == AnimationStatus.completed) {
+          controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          controller.forward();
+        } */
+      });
+
+    controller.forward();
   }
 
   @override
@@ -114,7 +140,7 @@ class _EditProfileState extends State<EditProfile> {
         children: <Widget>[
           Positioned(
             bottom: 0,
-            height: 410,
+            height: animation.value,
             left: 0,
             right: 0,
             child: Consumer<UserModel>(builder: (context, user, child) {
@@ -247,7 +273,7 @@ class _EditProfileState extends State<EditProfile> {
             }),
           ),
           Positioned(
-            bottom: 417,
+            bottom: animation.value + 7,
             height: 40,
             width: 40,
             right: 7,
@@ -258,7 +284,9 @@ class _EditProfileState extends State<EditProfile> {
                 color: primaryColor,
               ),
               onPressed: () {
-                Navigator.pop(context);
+                controller.reverse().then((d) {
+                  Get.back();
+                });
               },
             ),
           ),

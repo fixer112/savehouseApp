@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../home.dart';
 
@@ -63,10 +64,7 @@ class _RegisteredState extends State<Registered> {
                             fontSize: 12.0, fontWeight: FontWeight.bold),
                       ),
                       onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => Home()));
+                        Get.to(Home());
                       },
                     ),
                   ],

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
@@ -65,18 +66,14 @@ class _InvestState extends State<Invest> {
 
       user.setLoading(false);
       print(resStr);
-      request2(
-          resStr,
-          res.statusCode,
-          () async => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (BuildContext context) => Home())),
-          context,
+      request2(resStr, res.statusCode, () async => Get.to(Home()), context,
           _scaffoldKey);
       return;
     } catch (e) {
       user.setLoading(false);
       print(e);
-      snackbar(connErrorMsg, context, _scaffoldKey);
+      getSnack('Error', connErrorMsg);
+      //snackbar(connErrorMsg, context, _scaffoldKey);
     }
   }
 
@@ -127,12 +124,12 @@ class _InvestState extends State<Invest> {
         //var body = json.decode(response.body);
         //print(body);
         request(response, () async {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (BuildContext context) => Home()));
+          Get.to(Home());
         }, context, _scaffoldKey);
       } catch (e) {
         user.setLoading(false);
-        snackbar(connErrorMsg, context, _scaffoldKey);
+        getSnack('Error', connErrorMsg);
+        //snackbar(connErrorMsg, context, _scaffoldKey);
       }
     }
   }
@@ -152,7 +149,8 @@ class _InvestState extends State<Invest> {
       request(response, () async {}, context, _scaffoldKey);
     } catch (e) {
       user.setLoading(false);
-      snackbar(connErrorMsg, context, _scaffoldKey);
+      getSnack('Error', connErrorMsg);
+      //snackbar(connErrorMsg, context, _scaffoldKey);
     }
   }
 

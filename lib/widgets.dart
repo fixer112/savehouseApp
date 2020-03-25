@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -85,11 +86,7 @@ class Widgets {
                       if (icon == 1 && context != null) {
                         showEditProfile(context);
                       } else if (context != null) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Account(),
-                            ));
+                        Get.to(Account());
                       }
                     },
                   ),
@@ -147,7 +144,15 @@ class Widgets {
       ],
       onTap: (ind) {
         if (ind == index) return;
-        Navigator.pushReplacement(
+        Get.off([
+          Home(),
+          Invest(),
+          Consumer<UserModel>(builder: (context, user, child) {
+            return Activity(user.user);
+          }),
+          Account(),
+        ][ind]);
+        /* Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => <Widget>[
@@ -157,7 +162,7 @@ class Widgets {
                         return Activity(user.user);
                       }),
                       Account(),
-                    ][ind]));
+                    ][ind])); */
       },
     );
   }

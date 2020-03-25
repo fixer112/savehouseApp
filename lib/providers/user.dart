@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -70,17 +71,17 @@ class UserModel extends ChangeNotifier {
           : json.decode(response.body);
 
       request(response, () async {
-        setUser(User.fromMap(body));
+        if (body != null) setUser(User.fromMap(body));
         user.user.settings = body['settings'];
         await user.user.getAllInvestments(context, _scaffoldKey);
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => Home()));
+        Get.off(Home());
       }, context, _scaffoldKey);
     } catch (e) {
       user.setLoading(false);
       print(e);
       //snackbar(e.message(), context, _scaffoldKey);
-      return snackbar(connErrorMsg, context, _scaffoldKey);
+      return getSnack('Error', connErrorMsg);
+      //return snackbar(connErrorMsg, context, _scaffoldKey);
     }
   }
 }

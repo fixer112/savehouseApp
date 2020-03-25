@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:savehouse/globals.dart';
+import 'package:savehouse/pages/auth/login.dart';
 
 import '../models/user.dart';
 import '../providers/user.dart';
@@ -26,6 +28,10 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration(minutes: 20), () {
+      getSnack('Timeout', 'You are forced to relogin after 20 minutes');
+      Get.to(Login());
+    });
     var user = Provider.of<UserModel>(context, listen: false);
 
     /* if (user.user != null) {

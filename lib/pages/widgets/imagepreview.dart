@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:savehouse/values.dart';
 
 class ImagePreview extends StatefulWidget {
@@ -40,7 +41,7 @@ class _ImagePreviewState extends State<ImagePreview> {
                 color: primaryColor,
               ),
               onPressed: () {
-                Navigator.pop(context);
+                Get.back();
               },
             ),
           ),

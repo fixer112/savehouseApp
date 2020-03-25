@@ -39,6 +39,7 @@ dependencies:
   random_string: ^2.0.1
   #quick_actions: ^0.4.0+2
   firebase_remote_config: ^0.3.0+3
+  get: ^1.11.1
 
   
 

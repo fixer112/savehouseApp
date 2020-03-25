@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:savehouse/providers/user.dart';
@@ -43,6 +44,16 @@ toast() {
       fontSize: 16.0);
 }
 
+getSnack(title, message, {int duration = 5}) {
+  Get.snackbar(title, message,
+      duration: Duration(seconds: duration),
+      //snackPosition: SnackPosition.BOTTOM,
+      margin: EdgeInsets.all(15),
+      //backgroundColor: secondaryColor,
+      backgroundGradient:
+          LinearGradient(colors: [secondaryColor, primaryColor]));
+}
+
 snackbar(text, BuildContext context, _scaffoldKey, {seconds = 5}) {
   /*  Fluttertoast.showToast(
       msg: text,
@@ -72,7 +83,7 @@ alert(context, {title = '', content}) {
             new FlatButton(
               child: new Text("Close"),
               onPressed: () {
-                Navigator.of(context).pop();
+                
               },
             ),
           ], */
@@ -81,30 +92,38 @@ alert(context, {title = '', content}) {
   );
 }
 
-request(Response response, Function action, context, GlobalKey _scaffoldKey) {
-  print(response.statusCode);
-  var body = json.decode(response.body);
-  print(body);
-
-  if (response.statusCode == 422) {
+processResponse(statusCode, body, Function action, context, _scaffoldKey) {
+  if (statusCode == 422) {
     var errors = '';
     body['errors'].forEach((error, data) => errors += '${data[0]}\n');
-    return snackbar(errors, context, _scaffoldKey);
+    //return snackbar(errors, context, _scaffoldKey);
+    return getSnack('Error', errors);
   }
 
-  if (response.statusCode == 200) {
+  if (statusCode == 200) {
     if (body.containsKey('error')) {
-      snackbar(body['error'], context, _scaffoldKey);
+      getSnack('Error', body['error']);
+      //snackbar(body['error'], context, _scaffoldKey);
     }
     if (body.containsKey('success')) {
-      snackbar(body['success'], context, _scaffoldKey);
+      getSnack('Error', body['success']);
+      //snackbar(body['success'], context, _scaffoldKey);
     }
     action();
   } else {
     //print(body);
-    return snackbar(
-        'An error occured, Please try later.', context, _scaffoldKey);
+    return getSnack('Error', 'An error occured, Please try later.');
+    /*  return snackbar(
+        'An error occured, Please try later.', context, _scaffoldKey); */
   }
+}
+
+request(Response response, Function action, context, GlobalKey _scaffoldKey) {
+  print(response.statusCode);
+  var body = json.decode(response.body);
+  //print(body);
+  return processResponse(
+      response.statusCode, body, action, context, _scaffoldKey);
 }
 
 request2(String string, int statusCode, Function action, context,
@@ -113,25 +132,7 @@ request2(String string, int statusCode, Function action, context,
   var body = json.decode(string);
   //print(body);
 
-  if (statusCode == 422) {
-    var errors = '';
-    body['errors'].forEach((error, data) => errors += '${data[0]}\n');
-    return snackbar(errors, context, _scaffoldKey);
-  }
-
-  if (statusCode == 200) {
-    if (body.containsKey('error')) {
-      snackbar(body['error'], context, _scaffoldKey);
-    }
-    if (body.containsKey('success')) {
-      snackbar(body['success'], context, _scaffoldKey);
-    }
-    action();
-  } else {
-    print(body);
-    return snackbar(
-        'An error occured, Please try later.', context, _scaffoldKey);
-  }
+  return processResponse(statusCode, body, action, context, _scaffoldKey);
 }
 
 String greeting() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:savehouse/pages/auth/login.dart';
 import 'package:savehouse/pages/widgets/editprofile.dart';
@@ -87,10 +88,7 @@ class _AccountState extends State<Account> {
                       color: Colors.red,
                     ),
                   ),
-                  onTap: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Login())),
+                  onTap: () => Get.to(Login()),
                 ),
               ),
             ],

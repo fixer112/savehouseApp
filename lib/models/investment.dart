@@ -129,7 +129,8 @@ class Investment {
         user.setLoading(false);
       }
       print(e);
-      snackbar(connErrorMsg, context, _scaffoldKey);
+      getSnack('Error', connErrorMsg);
+      //snackbar(connErrorMsg, context, _scaffoldKey);
     }
   }
 }

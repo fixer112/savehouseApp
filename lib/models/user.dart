@@ -83,13 +83,14 @@ class User {
       }, context, _scaffoldKey);
     } catch (e) {
       user.setLoading(false);
-      snackbar(connErrorMsg, context, _scaffoldKey);
+      getSnack('Error', connErrorMsg);
+      //snackbar(connErrorMsg, context, _scaffoldKey);
     }
   }
 
   Future getAllInvestments(BuildContext context, GlobalKey _scaffoldKey) async {
     var user = Provider.of<UserModel>(context, listen: false);
-    print(user.hostUrl);
+    //print(user.hostUrl);
     try {
       //var user = Provider.of<UserModel>(context);
       user.setLoading(true);
@@ -111,7 +112,8 @@ class User {
     } catch (e) {
       user.setLoading(false);
       print(e);
-      snackbar(connErrorMsg, context, _scaffoldKey);
+      //snackbar(connErrorMsg, context, _scaffoldKey);
+      getSnack('Error', connErrorMsg);
     }
   }
 
@@ -147,7 +149,8 @@ class User {
         user.setLoading(false);
       }
       print(e);
-      snackbar(connErrorMsg, context, _scaffoldKey);
+      //snackbar(connErrorMsg, context, _scaffoldKey);
+      getSnack('Error', connErrorMsg);
     }
   }
 
@@ -181,7 +184,8 @@ class User {
         user.setLoading(false);
       }
       print(e);
-      snackbar(connErrorMsg, context, _scaffoldKey);
+      //snackbar(connErrorMsg, context, _scaffoldKey);
+      getSnack('Error', connErrorMsg);
     }
   }
 
