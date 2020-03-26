@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -28,11 +30,23 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(minutes: 20), () {
+
+    var user = Provider.of<UserModel>(context, listen: false);
+
+    int timeOut = user.getConfig.getInt('timeout');
+
+    if (kReleaseMode) {
+      print('timeout $timeOut');
+      Timer.periodic(Duration(minutes: timeOut), (time) {
+        time.cancel();
+        Get.to(Login());
+        getSnack('Timeout', 'You are forced to relogin after $timeOut minutes');
+      });
+    }
+    /* Future.delayed(Duration(minutes: 5), () {
       getSnack('Timeout', 'You are forced to relogin after 20 minutes');
       Get.to(Login());
-    });
-    var user = Provider.of<UserModel>(context, listen: false);
+    }); */
 
     /* if (user.user != null) {
       final QuickActions quickActions = QuickActions();

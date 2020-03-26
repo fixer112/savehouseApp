@@ -29,6 +29,8 @@ class UserModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  RemoteConfig get getConfig => _config;
+
   setUrl() {
     hostUrl = _config.getString('url');
   }

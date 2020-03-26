@@ -158,7 +158,8 @@ getConfig(BuildContext context) async {
   var user = Provider.of<UserModel>(context, listen: false);
   final RemoteConfig remoteConfig = await RemoteConfig.instance;
   final defaults = <String, dynamic>{
-    'url': 'http://client.safehousecapital.ng'
+    'url': 'http://client.safehousecapital.ng',
+    'timeout': 20,
   };
   remoteConfig.setConfigSettings(RemoteConfigSettings(debugMode: true));
   await remoteConfig.setDefaults(defaults);
