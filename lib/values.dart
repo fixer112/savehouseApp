@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 //String url;
 
-Color primaryColor = Color(0xff020d36b);
-MaterialColor primarySwatch = MaterialColor(0xff020d36b, color);
-Color secondaryColor = Color(0xff04e73df);
+Color primaryColor = Color(0xff0141E42);
+//MaterialColor primarySwatch = MaterialColor(0xff020d36b, color);
+Color secondaryColor = Color(0xff02CB34A);
 Color whiteColor = Colors.white; //Color(0xffd7d7d7);
 Color shyColor = Color(0xffd7d7d7);
 Color dangerColor = Colors.redAccent;
-Color successColor = Colors.lightGreen;
+Color successColor = Color(0xff02CB34A);
 
 Map<int, Color> color = {
   50: Color.fromRGBO(136, 14, 79, .1),

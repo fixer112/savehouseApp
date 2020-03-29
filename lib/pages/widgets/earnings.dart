@@ -23,10 +23,11 @@ class _EarningsState extends State<Earnings> {
     return widget.earnings.length < 1
         ? Center(
             //padding: EdgeInsets.symmetric(vertical: 20, horizontal: 55),
-            child: Text(
+            child: Widgets.text(
               'No Earning Available',
-              style: TextStyle(
-                  fontSize: 20, shadows: Widgets.textShadows(color: shyColor)),
+              fontSize: 20,
+              /* shadows: Widgets.textShadows(color: shyColor) */
+
               textAlign: TextAlign.center,
             ),
           )
@@ -51,41 +52,31 @@ class _EarningsState extends State<Earnings> {
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          Text(
-                            '${widget.earnings[index].id}',
-                            style: TextStyle(fontSize: 16),
-                          ),
+                          Widgets.text('${widget.earnings[index].id}',
+                              fontSize: 16),
                           Expanded(child: Container()),
-                          Text(
-                            '${widget.earnings[index].percentage}%',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w400),
-                          ),
+                          Widgets.text('${widget.earnings[index].percentage}%',
+                              fontSize: 20, fontWeight: FontWeight.w400),
                           amt <= 0 ? Widgets.lossIcon() : Widgets.profitIcon(),
                         ],
                       ),
                       SizedBox(
                         height: 12,
                       ),
-                      Text(
-                        Widgets.currency(amt),
-                        style: TextStyle(
-                            fontSize: 23, fontWeight: FontWeight.bold),
-                      ),
+                      Widgets.text(Widgets.currency(amt),
+                          fontSize: 23, fontWeight: FontWeight.bold),
                       SizedBox(
                         height: 12,
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: secondaryColor,
+                          color: primaryColor,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         padding: EdgeInsets.symmetric(
                             vertical: 4.0, horizontal: 6.0),
-                        child: Text(
-                          widget.earnings[index].addedAt,
-                          style: TextStyle(fontSize: 13, color: Colors.white),
-                        ),
+                        child: Widgets.text(widget.earnings[index].addedAt,
+                            color: Colors.white),
                       ),
                     ]),
               ));

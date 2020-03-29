@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 
 import '../values.dart';
 import 'auth/login.dart';
-import '../globals.dart';
-import 'package:path/path.dart';
 
 Widget splashScreen() {
   return MaterialApp(
@@ -23,7 +21,9 @@ class Splash extends StatefulWidget {
   _SplashState createState() => new _SplashState();
 }
 
-class _SplashState extends State<Splash> {
+class _SplashState extends State<Splash> with TickerProviderStateMixin {
+  AnimationController controller;
+  Animation animation;
   @override
   void initState() {
     super.initState();
@@ -32,8 +32,31 @@ class _SplashState extends State<Splash> {
       getSnack('Timeout', 'You are forced to re-login after 20 minutes');
       Get.to(Login());
     }); */
+    /* controller = AnimationController(
+        duration: const Duration(milliseconds: 1500), vsync: this);
+    
 
+    animation = Tween(begin: 1.0, end: 1.5)
+        .animate(CurvedAnimation(parent: controller, curve: Curves.bounceIn))
+          ..addListener(() {
+            setState(() {});
+          })
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              controller.reverse();
+            }
+            else if (status == AnimationStatus.dismissed) {
+              controller.forward();
+            }
+          });
+    controller.forward(); */
     loading();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //controller.dispose();
   }
 
   Future<Timer> loading() async {
@@ -46,22 +69,19 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-          backgroundColor: secondaryColor,
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                //Image.asset('assets/images/panic_alert.png', height: 100.0,),
-                //SizedBox(height: 30.0,),
-                Text(
-                  'SaveHouse Capital',
-                  style: TextStyle(fontSize: 30.0, color: primaryColor),
-                ),
-              ],
-            ),
-          )),
+    return Scaffold(
+      backgroundColor: primaryColor,
+      body: Image.asset(
+        "assets/images/splash.jpg",
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        fit: BoxFit.fill,
+      ), /* ScaleTransition(
+          scale: animation,
+          child: Center(
+            child: Image.asset("assets/images/splash.png"),
+          ),
+        ), */
     );
   }
 }

@@ -71,29 +71,20 @@ Widget investmentEach(context, Investment investment, UserModel user) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  investment.ref,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
+                Widgets.text(investment.ref,
+                    fontWeight: FontWeight.bold, fontSize: 16),
                 Container(
                   margin: EdgeInsets.only(top: 10, bottom: 0),
                   child: Row(
                     //mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        Widgets.currency(investment.amount),
-                        style: TextStyle(fontSize: 15),
-                      ),
+                      Widgets.text(Widgets.currency(investment.amount),
+                          fontSize: 15),
                       SizedBox(width: 10),
-                      Text(
-                        '/',
-                        style: TextStyle(fontSize: 19),
-                      ),
+                      Widgets.text('/', fontSize: 19),
                       SizedBox(width: 10),
-                      Text(
-                        '${investment.duration.toString()} months',
-                        style: TextStyle(fontSize: 15),
-                      ),
+                      Widgets.text('${investment.duration.toString()} months',
+                          fontSize: 15),
                     ],
                   ),
                 ),
@@ -106,19 +97,14 @@ Widget investmentEach(context, Investment investment, UserModel user) {
                         child: Row(
                           //mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(
+                            Widgets.text(
                               investment.startDate,
-                              style: TextStyle(fontSize: 13),
                             ),
                             SizedBox(width: 10),
-                            Text(
-                              '-',
-                              style: TextStyle(fontSize: 19),
-                            ),
+                            Widgets.text('-', fontSize: 19),
                             SizedBox(width: 10),
-                            Text(
+                            Widgets.text(
                               investment.endDate,
-                              style: TextStyle(fontSize: 13),
                             ),
                           ],
                         ),
@@ -129,7 +115,7 @@ Widget investmentEach(context, Investment investment, UserModel user) {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Container(
-                      child: Text(investment.type.toUpperCase()),
+                      child: Widgets.text(investment.type.toUpperCase()),
                       decoration: BoxDecoration(color: shyColor),
                       padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
                     ),

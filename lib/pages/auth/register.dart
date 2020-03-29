@@ -32,89 +32,51 @@ class _RegisterState extends State<Register> {
           padding: EdgeInsets.all(20.0),
           children: <Widget>[
             SizedBox(height: 100.0),
-            Text(
-              'Register',
-              style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.bold),
-            ),
+            Widgets.text('Register',
+                fontSize: 27.0, fontWeight: FontWeight.bold),
             SizedBox(height: 4),
-            Text(
-              'create a free account and start a proper financial journey with saveHouse capital',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            ),
+            Widgets.text(
+                'create a free account and start a proper financial journey with saveHouse capital',
+                fontSize: 13,
+                fontWeight: FontWeight.bold),
             SizedBox(height: 30),
-            Text(
-              'Full Name',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            ),
-            Widgets.textField(fullName, 'Full Name', TextInputType.text),
+            Widgets.text('Full Name',
+                fontSize: 13, fontWeight: FontWeight.bold),
+            Widgets.textField(fullName, TextInputType.text),
             SizedBox(height: 25),
-            Text(
-              'Username',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            ),
-            Widgets.textField(username, '@johndoe', TextInputType.text),
+            Widgets.text('Username', fontWeight: FontWeight.bold),
+            Widgets.textField(username, TextInputType.text),
             SizedBox(height: 25),
-            Text(
-              'Email Address',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            ),
-            Widgets.textField(
-                email, 'Email Address', TextInputType.emailAddress),
+            Widgets.text('Email Address', fontWeight: FontWeight.bold),
+            Widgets.textField(email, TextInputType.emailAddress),
             SizedBox(height: 25),
-            Text(
-              'Phone Number',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            ),
-            Widgets.textField(phone, 'Phone Number', TextInputType.phone),
+            Widgets.text('Phone Number', fontWeight: FontWeight.bold),
+            Widgets.textField(phone, TextInputType.phone),
             SizedBox(height: 25),
-            Text(
-              'Password',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            ),
-            Widgets.textField(
-                password, '******', TextInputType.visiblePassword),
+            Widgets.text('Password', fontWeight: FontWeight.bold),
+            Widgets.textField(password, TextInputType.visiblePassword),
             SizedBox(height: 25),
-            Text(
-              'Referrer Phone',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            ),
-            Widgets.textField(
-                ref, 'Referrer Phone or Promo Code', TextInputType.phone),
+            Widgets.text('Referrer Phone', fontWeight: FontWeight.bold),
+            Widgets.textField(ref, TextInputType.phone),
             SizedBox(height: 25),
-            FlatButton(
-              color: primaryColor,
-              child: loading == true
-                  ? SizedBox(
-                      height: 15,
-                      width: 15,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text(
-                      'REGISTER',
-                      style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold),
-                    ),
-              onPressed: () {
+            Widgets.button("Register", () {
+              setState(() {
+                loading = true;
+              });
+              Timer.periodic(Duration(seconds: 2), (t) {
                 setState(() {
-                  loading = true;
+                  loading = false;
                 });
-                Timer.periodic(Duration(seconds: 2), (t) {
-                  setState(() {
-                    loading = false;
-                  });
-                  showRegisteredWidget(context);
-                  t.cancel();
-                });
-              },
-            ),
+                showRegisteredWidget(context);
+                t.cancel();
+              });
+            }),
             InkWell(
               child: Container(
                 padding: EdgeInsets.all(20.0),
                 alignment: Alignment.center,
-                child: Text(
-                  'Already have an account? Login',
-                  style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
-                ),
+                child: Widgets.text('Already have an account? Login',
+                    fontWeight: FontWeight.bold),
               ),
               onTap: () {
                 Get.to(Login());

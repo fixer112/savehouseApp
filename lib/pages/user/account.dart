@@ -49,12 +49,10 @@ class _AccountState extends State<Account> {
                     FontAwesomeIcons.userEdit,
                     size: 25,
                   ),
-                  title: Text(
+                  title: Widgets.text(
                     'Edit Profile',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
                   ),
                   onTap: () {
                     showEditProfile(context);
@@ -80,13 +78,11 @@ class _AccountState extends State<Account> {
                     Icons.chevron_right,
                     size: 22,
                   ),
-                  title: Text(
+                  title: Widgets.text(
                     'Logout',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Colors.red,
-                    ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: Colors.red,
                   ),
                   onTap: () => Get.to(Login()),
                 ),

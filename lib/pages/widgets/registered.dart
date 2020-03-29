@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:savehouse/widgets.dart';
 
 import '../home.dart';
 
@@ -39,30 +40,23 @@ class _RegisteredState extends State<Registered> {
                           colors: Colors.green,
                         )),
                     SizedBox(height: 70.0),
-                    Text(
+                    Widgets.text(
                       'Registeration\nSuccessful!',
-                      style: TextStyle(
-                          fontSize: 27.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'calibri'),
+                      fontSize: 27.0,
+                      fontWeight: FontWeight.bold,
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 15),
-                    Text(
+                    Widgets.text(
                       'User Registered',
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
+                      fontSize: 12,
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 40),
                     FlatButton(
                       color: Colors.green,
-                      child: Text(
-                        'LET\'S GET STARTED',
-                        style: TextStyle(
-                            fontSize: 12.0, fontWeight: FontWeight.bold),
-                      ),
+                      child: Widgets.text('LET\'S GET STARTED',
+                          fontSize: 12.0, fontWeight: FontWeight.bold),
                       onPressed: () {
                         Get.to(Home());
                       },

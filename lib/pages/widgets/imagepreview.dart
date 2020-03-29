@@ -38,7 +38,7 @@ class _ImagePreviewState extends State<ImagePreview> {
               icon: Icon(
                 Icons.cancel,
                 size: 25,
-                color: primaryColor,
+                color: secondaryColor,
               ),
               onPressed: () {
                 Get.back();

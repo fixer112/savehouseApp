@@ -84,7 +84,7 @@ class _InvestState extends State<Invest> {
 
     var publicKey = user.user.settings['paystack_key'];
 
-    print('user_id:${user.user.id}');
+    // print('user_id:${user.user.id}');
 
     PaystackPlugin.initialize(publicKey: publicKey);
   }
@@ -121,12 +121,13 @@ class _InvestState extends State<Invest> {
               'Accept': 'application/json',
             });
         user.setLoading(false);
-        //var body = json.decode(response.body);
-        //print(body);
+        var body = json.decode(response.body);
+        print('body:$body');
         request(response, () async {
           Get.to(Home());
         }, context, _scaffoldKey);
       } catch (e) {
+        print(e);
         user.setLoading(false);
         getSnack('Error', connErrorMsg);
         //snackbar(connErrorMsg, context, _scaffoldKey);
@@ -174,17 +175,14 @@ class _InvestState extends State<Invest> {
               SizedBox(
                 height: 40,
               ),
-              Text(
-                'Amount to Invest',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-              ),
+              Widgets.text('Amount to Invest', fontWeight: FontWeight.bold),
               Widgets.textField(
-                  amount, 'Amount', TextInputType.numberWithOptions()),
-              SizedBox(height: 25),
-              Text(
-                'Duration to Invest',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                amount,
+                TextInputType.numberWithOptions(),
+                prefix: Widgets.text("NGN ", fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 25),
+              Widgets.text('Duration to Invest', fontWeight: FontWeight.bold),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: DropdownButton(
@@ -193,7 +191,7 @@ class _InvestState extends State<Invest> {
                     var string = durations[index].toString();
                     return Widgets.dropItem(string, string);
                   }),
-                  hint: Text('Select Duration'),
+                  hint: Widgets.text('Select Duration'),
                   value: duration,
                   onChanged: (value) {
                     setState(() {
@@ -203,10 +201,7 @@ class _InvestState extends State<Invest> {
                 ),
               ),
               SizedBox(height: 25),
-              Text(
-                'Investment type',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-              ),
+              Widgets.text('Investment type', fontWeight: FontWeight.bold),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: DropdownButton(
@@ -215,7 +210,7 @@ class _InvestState extends State<Invest> {
                     var string = types[index].toString();
                     return Widgets.dropItem(string, string);
                   }),
-                  hint: Text('Select Type'),
+                  hint: Widgets.text('Select Type'),
                   value: type,
                   onChanged: (value) {
                     setState(() {
@@ -225,10 +220,7 @@ class _InvestState extends State<Invest> {
                 ),
               ),
               SizedBox(height: 25),
-              Text(
-                'Method of payment',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-              ),
+              Widgets.text('Method of payment', fontWeight: FontWeight.bold),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: DropdownButton<String>(
@@ -236,7 +228,7 @@ class _InvestState extends State<Invest> {
                     Widgets.dropItem('Online Payment', 'online'),
                     Widgets.dropItem('Proof Payment', 'proof'),
                   ],
-                  hint: Text('Select Method'),
+                  hint: Widgets.text('Select Method'),
                   value: method,
                   onChanged: (value) {
                     setState(() {
@@ -251,21 +243,17 @@ class _InvestState extends State<Invest> {
                       // shrinkWrap: true,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          'Choose Proof of payment',
-                          style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.bold),
-                        ),
+                        Widgets.text('Choose Proof of payment',
+                            fontWeight: FontWeight.bold),
                         SizedBox(height: 15),
                         Row(
                           children: <Widget>[
                             FlatButton(
                               color: secondaryColor,
-                              child: Text(
+                              child: Widgets.text(
                                 _image != null
                                     ? 'Change Proof'
                                     : 'Choose Proof',
-                                style: TextStyle(color: Colors.white),
                               ),
                               onPressed: () => getImage(),
                             ),
@@ -287,50 +275,33 @@ class _InvestState extends State<Invest> {
                       ],
                     )
                   : Container(),
-              FlatButton(
-                color: primaryColor,
-                child: loading == true
-                    ? SizedBox(
-                        height: 15,
-                        width: 15,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Text(
-                        'INVEST',
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                onPressed: () {
-                  int minAmount = user.user.settings['minimum_amount'];
-                  if (!user.isloading) {
-                    //print(duration);
-                    if ([amount.text, duration, type, method].contains(null)) {
-                      return snackbar(
-                          'All fields required', context, _scaffoldKey);
-                    }
-                    if (int.parse(amount.text) < minAmount) {
-                      return snackbar('Minimum amount allowed is $minAmount',
-                          context, _scaffoldKey);
-                    }
-                    if (method == 'online') {
-                      return checkOut(context,
-                          user: user,
-                          duration: int.parse(duration),
-                          type: type,
-                          amount: int.parse(amount.text));
-                    }
-                    if (method == 'proof') {
-                      return _image != null
-                          ? addInvestment(context, _scaffoldKey)
-                          : snackbar(
-                              'No proof selected', context, _scaffoldKey);
-                    }
+              Widgets.button('Invest', () {
+                //print(amount.text);
+                int minAmount = user.user.settings['minimum_amount'];
+                if (!user.isloading) {
+                  //print(duration);
+                  if ([amount.text, duration, type, method].contains(null)) {
+                    return getSnack('Error', 'All fields required');
                   }
-                  closeKeybord(context);
-                },
-              ),
+                  if (int.parse(amount.text) < minAmount) {
+                    return getSnack(
+                        'Error', 'Minimum amount allowed is $minAmount');
+                  }
+                  if (method == 'online') {
+                    return checkOut(context,
+                        user: user,
+                        duration: int.parse(duration),
+                        type: type,
+                        amount: int.parse(amount.text));
+                  }
+                  if (method == 'proof') {
+                    return _image != null
+                        ? addInvestment(context, _scaffoldKey)
+                        : getSnack('Error', 'No proof selected');
+                  }
+                }
+                closeKeybord(context);
+              }),
             ],
           ),
           Widgets.loader(user)

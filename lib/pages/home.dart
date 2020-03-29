@@ -43,30 +43,7 @@ class _HomeState extends State<Home> {
         getSnack('Timeout', 'You are forced to relogin after $timeOut minutes');
       });
     }
-    /* Future.delayed(Duration(minutes: 5), () {
-      getSnack('Timeout', 'You are forced to relogin after 20 minutes');
-      Get.to(Login());
-    }); */
 
-    /* if (user.user != null) {
-      final QuickActions quickActions = QuickActions();
-      quickActions.initialize((shortcutType) {
-        if (shortcutType == 'action_main') {
-          print('The user tapped on the "Main view" action.');
-        }
-        // More handling code...
-      });
-
-      quickActions.setShortcutItems(<ShortcutItem>[
-        const ShortcutItem(
-            type: 'action_main',
-            localizedTitle: 'Main view',
-            icon: 'icon_main'),
-        const ShortcutItem(
-            type: 'action_help', localizedTitle: 'Help', icon: 'icon_help')
-      ]);
-    }
- */
     firebaseMessaging.getToken().then((token) async {
       print('FCM Token: $token');
       var response = await http.post(
@@ -147,25 +124,20 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: WillPopScope(
-        onWillPop: () => Future.value(false),
-        child: Scaffold(
-          key: _scaffoldKey,
-          body: Consumer<UserModel>(builder: (context, user, child) {
-            return Stack(children: [
-              body(user),
-              Widgets.loader(user),
-            ]);
-          }),
-          floatingActionButton:
-              Consumer<UserModel>(builder: (context, user, child) {
-            return Widgets.floatReloadButton(
-                () => getSums(user.user, reload: true));
-          }),
-          bottomNavigationBar: Widgets.bottomNav(0, context),
-        ),
-      ),
+    return Scaffold(
+      key: _scaffoldKey,
+      body: Consumer<UserModel>(builder: (context, user, child) {
+        return Stack(children: [
+          body(user),
+          Widgets.loader(user),
+        ]);
+      }),
+      floatingActionButton:
+          Consumer<UserModel>(builder: (context, user, child) {
+        return Widgets.floatReloadButton(
+            () => getSums(user.user, reload: true));
+      }),
+      bottomNavigationBar: Widgets.bottomNav(0, context),
     );
   }
 
@@ -192,7 +164,7 @@ class _HomeState extends State<Home> {
               return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: index % 2 != 0 ? primaryColor : secondaryColor,
+                  color: index % 2 == 0 ? primaryColor : secondaryColor,
                 ),
                 margin: EdgeInsets.symmetric(horizontal: 3.0),
                 padding: EdgeInsets.all(15.0),
@@ -209,24 +181,13 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          balances[index]['title'],
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: whiteColor,
-                          ),
-                        ),
+                        Widgets.text(balances[index]['title'],
+                            fontWeight: FontWeight.bold, color: Colors.white),
                         SizedBox(height: 4),
-                        Text(
-                          Widgets.currency(balances[index]['value']),
-                          style: TextStyle(
-                            color: whiteColor,
+                        Widgets.text(Widgets.currency(balances[index]['value']),
                             fontSize: 19.0,
                             fontWeight: FontWeight.w900,
-                            //shadows: Widgets.textShadows(),
-                          ),
-                        ),
+                            color: Colors.white),
                       ],
                     ),
                   ],
@@ -236,12 +197,8 @@ class _HomeState extends State<Home> {
           ),
         ),
         SizedBox(height: 40),
-        Text(
-          'Investments',
-          style: TextStyle(
-              fontSize: 20, shadows: Widgets.textShadows(color: shyColor)),
-          textAlign: TextAlign.center,
-        ),
+        Widgets.text('Investments',
+            fontSize: 20, textAlign: TextAlign.center, color: Colors.black),
         SizedBox(height: 20),
         Widgets.toggleTabs(user.user.investmentToggle(), context, this),
       ],

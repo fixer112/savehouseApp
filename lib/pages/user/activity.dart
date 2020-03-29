@@ -82,7 +82,7 @@ class _ActivityState extends State<Activity> {
                 ),
               ),
               SizedBox(width: 15),
-              Text(DateFormat("dd-MM-yyyy").format(now)),
+              Widgets.text(DateFormat("dd-MM-yyyy").format(now)),
               SizedBox(width: 15),
               Expanded(
                 child: Container(
@@ -111,10 +111,8 @@ class _ActivityState extends State<Activity> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        widget.user.activities[index].summary,
-                        style: TextStyle(fontSize: 15),
-                      ),
+                      Widgets.text(widget.user.activities[index].summary,
+                          fontSize: 15),
                       SizedBox(
                         height: 7,
                       ),
@@ -124,18 +122,16 @@ class _ActivityState extends State<Activity> {
                         children: <Widget>[
                           Container(
                             decoration: BoxDecoration(
-                              color: secondaryColor,
+                              color: primaryColor,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             padding: EdgeInsets.symmetric(
                                 vertical: 4.0, horizontal: 6.0),
-                            child: Text(
+                            child: Widgets.text(
                               widget.user.activities[index].createdAt,
-                              style:
-                                  TextStyle(fontSize: 13, color: Colors.white),
+                              color: Colors.white,
                             ),
                           ),
-                          //Text(widget.user.activities[index].createdAt),
                           Container(
                             alignment: Alignment.centerRight,
                             child: Container(
@@ -146,7 +142,8 @@ class _ActivityState extends State<Activity> {
                               //color: shyColor,
                               padding: EdgeInsets.symmetric(
                                   vertical: 2, horizontal: 8),
-                              child: Text(widget.user.activities[index].by),
+                              child: Widgets.text(
+                                  widget.user.activities[index].by),
                             ),
                           ),
                         ],

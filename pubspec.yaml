@@ -40,6 +40,7 @@ dependencies:
   #quick_actions: ^0.4.0+2
   firebase_remote_config: ^0.3.0+3
   get: ^1.11.1
+  google_fonts: ^0.2.0
 
   
 
@@ -51,7 +52,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: assets/icon/logo.jpeg
+  image_path: assets/images/launch.jpeg
 
 
 # For information on the generic Dart part of this file, see the
@@ -65,7 +66,11 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/icon/logo.jpeg
+    - assets/images/logo.png
+    - assets/images/splash.png
+    - assets/images/splash.jpg
+    - assets/images/launch.jpeg
+    - assets/images/deal.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
@@ -82,7 +87,14 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+    - family: MavinPro
+      fonts:
+        - asset: assets/fonts/mavin/MavenPro-Regular.ttf
+        - asset: assets/fonts/mavin/MavenPro-Bold.ttf
+          weight: 700
+       # - asset: assets/fonts/mavin/MavenPro-Black.ttf
+        #- asset: assets/fonts/mavin/MavenPro-Medium.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

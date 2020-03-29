@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:savehouse/pages/auth/login.dart';
 import 'package:savehouse/providers/user.dart';
 import 'package:savehouse/values.dart';
+import 'package:savehouse/widgets.dart';
 
 final String connErrorMsg = 'Connection Failed';
 
@@ -17,12 +20,12 @@ dialog(BuildContext context, String title, String body) {
     builder: (BuildContext context) {
       // return object of type Dialog
       return AlertDialog(
-        title: new Text("Alert Dialog title"),
-        content: new Text("Alert Dialog body"),
+        title: Widgets.text("Alert Dialog title"),
+        content: Widgets.text("Alert Dialog body"),
         actions: <Widget>[
           // usually buttons at the bottom of the dialog
           new FlatButton(
-            child: new Text("Close"),
+            child: Widgets.text("Close"),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -64,8 +67,8 @@ snackbar(text, BuildContext context, _scaffoldKey, {seconds = 5}) {
       textColor: Colors.white,
       fontSize: 16.0); */
 
-  final snack =
-      SnackBar(content: Text(text), duration: Duration(seconds: seconds));
+  final snack = SnackBar(
+      content: Widgets.text(text), duration: Duration(seconds: seconds));
   _scaffoldKey.currentState.removeCurrentSnackBar();
   _scaffoldKey.currentState.showSnackBar(snack);
 }
@@ -76,8 +79,8 @@ alert(context, {title = '', content}) {
     builder: (BuildContext context) {
       // return object of type Dialog
       return AlertDialog(
-        title: Text(title),
-        content: Text(content),
+        title: Widgets.text(title),
+        content: Widgets.text(content),
         /* actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -93,6 +96,10 @@ alert(context, {title = '', content}) {
 }
 
 processResponse(statusCode, body, Function action, context, _scaffoldKey) {
+  if (statusCode == 401) {
+    getSnack('Error', 'Please re login');
+    return Get.off(Login());
+  }
   if (statusCode == 422) {
     var errors = '';
     body['errors'].forEach((error, data) => errors += '${data[0]}\n');
@@ -175,4 +182,40 @@ getConfig(BuildContext context) async {
 
   // print(remoteConfig);
   //return remoteConfig;
+}
+
+Future showNotificationWithDefaultSound(String title, String message) async {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  var initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  var initializationSettingsIOS =
+      IOSInitializationSettings(onDidReceiveLocalNotification: null);
+  var initializationSettings = InitializationSettings(
+      initializationSettingsAndroid, initializationSettingsIOS);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: null);
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      '1', 'Notification', '',
+      importance: Importance.Max, priority: Priority.Max, ticker: 'ticker');
+  var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+  var platformChannelSpecifics = NotificationDetails(
+      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    '$title',
+    '$message',
+    platformChannelSpecifics,
+    payload: 'Default_Sound',
+  );
+}
+
+/* Future<dynamic> onSelectNotification(String n) {
+  print(n);
+} */
+
+Future bgMsgHdl(Map<String, dynamic> message) async {
+  print("onbgMessage: $message");
+  showNotificationWithDefaultSound(
+      message['data']['title'], message['data']['body']);
 }

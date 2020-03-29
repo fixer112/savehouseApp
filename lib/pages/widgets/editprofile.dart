@@ -160,12 +160,10 @@ class _EditProfileState extends State<EditProfile>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Text(
+                      Widgets.text(
                         'Edit Account',
-                        style: TextStyle(
-                            fontSize: 21.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'calibri'),
+                        fontSize: 21.0,
+                        fontWeight: FontWeight.bold,
                       ),
                       SizedBox(height: 15),
                       Row(
@@ -174,104 +172,52 @@ class _EditProfileState extends State<EditProfile>
                             onTap: () => getImage(),
                             child: Container(
                               //width: 100,
-                              child:
-                                  /* _image == null
-                                  ? Text('No image selected.')
-                                  : */ /* Image.file(
-                                        _image)  */
-                                  CircleAvatar(
-                                      backgroundImage: _image == null
-                                          ? NetworkImage(user.hostUrl +
-                                              user.user.profilePic)
-                                          : FileImage(_image)),
+                              child: CircleAvatar(
+                                  backgroundImage: _image == null
+                                      ? NetworkImage(
+                                          user.hostUrl + user.user.profilePic)
+                                      : FileImage(_image)),
                             ),
                           ),
                         ],
                       ),
                       SizedBox(height: 15),
-                      Text(
-                        'Username',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.bold),
-                      ),
-                      Widgets.textField(
-                          username, user.user.username, TextInputType.text,
-                          enabled: false),
+                      Widgets.text('Username', fontWeight: FontWeight.bold),
+                      Widgets.textField(username, TextInputType.text,
+                          enabled: false, hintText: user.user.username),
                       SizedBox(height: 25),
-                      Text(
-                        'First Name',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.bold),
-                      ),
-                      Widgets.textField(
-                          firstName, user.user.firstname, TextInputType.text),
+                      Widgets.text('First Name', fontWeight: FontWeight.bold),
+                      Widgets.textField(firstName, TextInputType.text,
+                          hintText: user.user.firstname),
                       SizedBox(height: 25),
-                      Text(
-                        'Last Name',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.bold),
-                      ),
-                      Widgets.textField(
-                          lastName, user.user.lastname, TextInputType.text),
+                      Widgets.text('Last Name', fontWeight: FontWeight.bold),
+                      Widgets.textField(lastName, TextInputType.text,
+                          hintText: user.user.lastname),
                       SizedBox(height: 25),
-                      Text(
-                        'Email Address',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.bold),
-                      ),
-                      Widgets.textField(
-                          email, user.user.email, TextInputType.emailAddress),
+                      Widgets.text('Email Address',
+                          fontWeight: FontWeight.bold),
+                      Widgets.textField(email, TextInputType.emailAddress,
+                          hintText: user.user.email),
                       SizedBox(height: 25),
-                      Text(
-                        'Old Password (optional)',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.bold),
-                      ),
-                      Widgets.textField(
-                          oldPass, '', TextInputType.visiblePassword),
+                      Widgets.text('Old Password (optional)',
+                          fontWeight: FontWeight.bold),
+                      Widgets.textField(oldPass, TextInputType.visiblePassword),
                       SizedBox(height: 25),
-                      Text(
-                        'New Password (optional)',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.bold),
-                      ),
-                      Widgets.textField(
-                          newPass, '', TextInputType.visiblePassword),
+                      Widgets.text('New Password (optional)',
+                          fontWeight: FontWeight.bold),
+                      Widgets.textField(newPass, TextInputType.visiblePassword),
                       SizedBox(height: 25),
-                      Text(
-                        'Confirm Password (optional)',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.bold),
-                      ),
+                      Widgets.text('Confirm Password (optional)',
+                          fontWeight: FontWeight.bold),
                       Widgets.textField(
-                          confirmPass, '', TextInputType.visiblePassword),
+                          confirmPass, TextInputType.visiblePassword),
                       SizedBox(height: 25),
-                      /* Text(
-                        'Phone Number',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.bold),
-                      ),
-                      Widgets.textField(
-                          phone, 'Phone Number', TextInputType.phone),
-                      SizedBox(height: 25), */
-                      FlatButton(
-                        color: primaryColor,
-                        child: Text(
-                          'SAVE',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () {
-                          if (!user.isloading) {
-                            //user.user.updateUser(context, _scaffoldKey);
-                            getData(user.user);
-                          }
-                          /*SnackBar(
-                            content: Text( 'Successful!' ),
-                            duration: Duration(seconds: 5),
-                          );*/
-                        },
-                      ),
+                      Widgets.button('Edit', () {
+                        if (!user.isloading) {
+                          getData(user.user);
+                        }
+                        closeKeybord(context);
+                      })
                     ],
                   ),
                 ),
@@ -287,7 +233,7 @@ class _EditProfileState extends State<EditProfile>
               icon: Icon(
                 Icons.cancel,
                 size: 23,
-                color: primaryColor,
+                color: secondaryColor,
               ),
               onPressed: () {
                 controller.reverse().then((d) {

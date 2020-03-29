@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../widgets.dart';
+
 class PopUp extends StatefulWidget {
   final Icon icon;
   final String strongText;
@@ -57,20 +59,16 @@ class _PopUpState extends State<PopUp> {
                   SizedBox(height: 10),
                   widget.icon,
                   SizedBox(height: 35.0),
-                  Text(
+                  Widgets.text(
                     widget.strongText,
-                    style: TextStyle(
-                        fontSize: 27.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'calibri'),
+                    fontSize: 27.0,
+                    fontWeight: FontWeight.bold,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 15),
-                  Text(
+                  Widgets.text(
                     widget.text,
-                    style: TextStyle(
-                      fontSize: 15,
-                    ),
+                    fontSize: 15,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10),

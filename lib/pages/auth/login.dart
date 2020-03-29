@@ -22,13 +22,42 @@ class _LoginState extends State<Login> {
 
   //var loading = false;
   final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
   @override
   void initState() {
     super.initState();
+
+    firebaseMessaging.requestNotificationPermissions();
+
+    firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) {
+        print('onMessage called: $message');
+        showNotificationWithDefaultSound(
+            message['data']['title'], message['data']['body']);
+        return;
+      },
+      onResume: (Map<String, dynamic> message) {
+        print('onResume called: $message');
+        return;
+      },
+      onLaunch: (Map<String, dynamic> message) {
+        print('onLaunch called: $message');
+        return;
+      },
+      onBackgroundMessage: bgMsgHdl,
+    );
+    firebaseMessaging.getToken().then((token) {
+      print('FCM Token: $token');
+    });
+
+    firebaseMessaging.subscribeToTopic('global');
+
     var user = Provider.of<UserModel>(context, listen: false);
+
     getConfig(context);
+
     if (user.user != null) {
-      FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+      //FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
       firebaseMessaging.getToken().then((token) async {
         print('FCM Token: $token');
         var response = await http.post(
@@ -47,29 +76,52 @@ class _LoginState extends State<Login> {
   @override
   Widget build(context) {
     //var main = Provider.of<MainModel>(context, listen: false);
-    return MaterialApp(
-      home: WillPopScope(
-        onWillPop: () => Future.value(false),
-        child: Scaffold(
-          key: _scaffoldKey,
-          backgroundColor: Colors.white,
-          body: Consumer<UserModel>(builder: (context, user, child) {
-            return Stack(children: [
-              listLogin(user),
-              Widgets.loader(user),
-            ]);
-          }),
+    print(Theme.of(context).textTheme);
+    return Scaffold(
+      key: _scaffoldKey,
+      //backgroundColor: Colors.white,
+
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [secondaryColor, primaryColor],
+            begin: Alignment.topCenter, // FractionalOffset(0.5, 0.0),
+            end: Alignment.bottomCenter, //FractionalOffset(0.0, 0.5),
+            stops: [0.0, 1.0], tileMode: TileMode.clamp,
+          ),
         ),
+        child: Consumer<UserModel>(builder: (context, user, child) {
+          return Stack(children: [
+            listLogin(user),
+            Widgets.loader(user),
+          ]);
+        }),
       ),
     );
   }
 
   listLogin(UserModel user) {
     return ListView(
-      padding: EdgeInsets.all(20.0),
+      padding: EdgeInsets.symmetric(horizontal: 40.0),
       children: <Widget>[
-        SizedBox(height: 100.0),
-        Text(
+        SizedBox(height: 150.0),
+        Center(
+            child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(100)),
+          child: Container(
+            color: primaryColor,
+            child: Image.asset(
+              "assets/images/deal.png",
+              height: 50.0,
+            ),
+          ),
+        )),
+        SizedBox(height: 10.0),
+        Center(
+          child: Widgets.text("Welcome",
+              fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        /* Text(
           'Login',
           style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.bold),
         ),
@@ -77,68 +129,35 @@ class _LoginState extends State<Login> {
         Text(
           'securely login to your safehouse account',
           style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 30),
-        Text(
-          'Username',
-          style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-        ),
-        Container(
-          height: 40.0,
-          margin: EdgeInsets.only(top: 10.0),
-          child: Widgets.textField(username, 'username', TextInputType.text),
-        ),
-        SizedBox(height: 25),
-        Text(
-          'Password',
-          style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-        ),
-        Container(
-          height: 40.0,
-          margin: EdgeInsets.only(top: 10.0),
-          child: Widgets.textField(
-              password, '*******', TextInputType.visiblePassword),
-        ),
-        SizedBox(height: 25),
-        FlatButton(
-          color: primaryColor,
-          child:
-              /* user.isloading
-                   // ? SizedBox(
-                        height: 15,
-                        width: 15,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ))
-                    : */
-              Text(
-            'LOGIN',
-            style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
-          ),
-          onPressed: () async {
-            getConfig(context);
-            if (!user.isloading) {
-              if ([username.text, password.text].contains('')) {
-                return getSnack('Error', 'All inputs required');
-              }
-              user.login(username.text, password.text, context, _scaffoldKey);
-            }
-            closeKeybord(context);
-          },
-        ),
-        /* InkWell(
-          child: Container(
-            padding: EdgeInsets.all(20.0),
-            alignment: Alignment.center,
-            child: Text(
-              'Don\'t have an account? Register',
-              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
-            ),
-          ),
-          onTap: () {
-            
-          },
         ), */
+        SizedBox(height: 30),
+        Center(
+          child: Widgets.text('Username',
+              fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        Widgets.textField(username, TextInputType.text),
+        SizedBox(height: 25),
+        Center(
+          child: Widgets.text('Password',
+              fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        Widgets.textField(password, TextInputType.visiblePassword),
+        SizedBox(height: 25),
+        Container(
+          child: Widgets.button(
+            "Login",
+            () async {
+              getConfig(context);
+              if (!user.isloading) {
+                if ([username.text, password.text].contains('')) {
+                  return getSnack('Error', 'All inputs required');
+                }
+                user.login(username.text, password.text, context, _scaffoldKey);
+              }
+              closeKeybord(context);
+            }, /* color: Colors.transparent */
+          ),
+        )
       ],
     );
   }

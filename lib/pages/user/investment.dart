@@ -96,10 +96,8 @@ class _InvestmentState extends State<InvestmentWidget> {
       appBar: AppBar(
         backgroundColor: whiteColor,
         elevation: 0,
-        title: Text(
-          widget.investment.ref,
-          style: TextStyle(color: secondaryColor, fontWeight: FontWeight.bold),
-        ),
+        title: Widgets.text(widget.investment.ref,
+            color: secondaryColor, fontWeight: FontWeight.bold),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
@@ -117,14 +115,8 @@ class _InvestmentState extends State<InvestmentWidget> {
           Widgets.loader(user),
         ]);
       }),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.replay),
-        onPressed: () {
-          //print('yes');
-          getEarnings(reload: true);
-        },
-        //mini: ,
-      ),
+      floatingActionButton:
+          Widgets.floatReloadButton(() => getEarnings(reload: true)),
     );
   }
 
@@ -133,36 +125,6 @@ class _InvestmentState extends State<InvestmentWidget> {
       padding: EdgeInsets.all(20.0),
       physics: BouncingScrollPhysics(),
       children: <Widget>[
-        /*InkWell(
-            onTap: () {
-              showImagePreview(
-                  context,
-                  FlutterLogo(
-                    colors: Colors.green,
-                  ));
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                  //border: Border( bottom: BorderSide( color: whiteColor ) )
-                  ),
-              height: 130,
-              child: Stack(children: <Widget>[
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: FittedBox(
-                    child: FlutterLogo(
-                      colors: Colors.green,
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Container(color: Colors.black.withOpacity(.5)),
-              ]),
-            ),
-          ),*/
         Container(
           height: 90,
           child: PageView.builder(
@@ -190,24 +152,11 @@ class _InvestmentState extends State<InvestmentWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          balances[index]['title'],
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: whiteColor,
-                          ),
-                        ),
+                        Widgets.text(balances[index]['title'],
+                            color: Colors.white),
                         SizedBox(height: 4),
-                        Text(
-                          Widgets.currency(balances[index]['value']),
-                          style: TextStyle(
-                            color: whiteColor,
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w900,
-                            //shadows: Widgets.textShadows(),
-                          ),
-                        ),
+                        Widgets.text(Widgets.currency(balances[index]['value']),
+                            fontWeight: FontWeight.w900, color: Colors.white),
                       ],
                     ),
                   ],
@@ -232,10 +181,10 @@ class _InvestmentState extends State<InvestmentWidget> {
                   SizedBox(
                     height: 12,
                   ),
-                  Text(
-                    '${Widgets.ucfirst(widget.investment.type)} Investment',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-                  ),
+                  Widgets.text(
+                      '${Widgets.ucfirst(widget.investment.type)} Investment',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700),
                 ],
               ),
               Column(
@@ -247,8 +196,8 @@ class _InvestmentState extends State<InvestmentWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('${widget.investment.duration} Months',
-                          style: TextStyle(fontSize: 15)),
+                      Widgets.text('${widget.investment.duration} Months',
+                          fontSize: 15),
                       IconButton(
                         icon: Icon(
                           FontAwesomeIcons.externalLinkSquareAlt,
@@ -265,44 +214,10 @@ class _InvestmentState extends State<InvestmentWidget> {
                       ),
                     ],
                   ),
-                  Text(Widgets.currency(widget.investment.amount),
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.w600)),
+                  Widgets.text(Widgets.currency(widget.investment.amount),
+                      fontSize: 25, fontWeight: FontWeight.w600)
                 ],
               ),
-              /* Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    widget.investment.parentRoll == null
-                        ? Container()
-                        : RichText(
-                            text: TextSpan(
-                                text: '${widget.investment.ref} is rolled from',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 18),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text:
-                                          '${widget.investment.parentRoll.ref}',
-                                      style: TextStyle(
-                                          color: Colors.blueAccent,
-                                          fontSize: 18),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      InvestmentWidget(widget
-                                                          .investment
-                                                          .parentRoll)));
-                                        })
-                                ]),
-                          ),
-                  ]), */
             ],
           ),
         ),
