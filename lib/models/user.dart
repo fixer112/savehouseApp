@@ -21,29 +21,30 @@ class User {
   //final List<String> appToken;
   final String type;
   final String profilePic;
+  final String identityPic;
   final DateTime createdAt;
   List<Investment> investments;
   List<Activity> activities;
   Map<String, dynamic> dynamicInvestments;
   var settings;
 
-  User({
-    this.id,
-    this.username,
-    this.firstname,
-    this.fullname,
-    this.lastname,
-    this.email,
-    this.apiToken,
-    //this.appToken,
-    this.type,
-    this.profilePic,
-    this.createdAt,
-    this.investments,
-    this.activities,
-    this.dynamicInvestments,
-    this.settings,
-  });
+  User(
+      {this.id,
+      this.username,
+      this.firstname,
+      this.fullname,
+      this.lastname,
+      this.email,
+      this.apiToken,
+      //this.appToken,
+      this.type,
+      this.profilePic,
+      this.createdAt,
+      this.investments,
+      this.activities,
+      this.dynamicInvestments,
+      this.settings,
+      this.identityPic});
 
   factory User.fromMap(Map data) {
     return User(
@@ -56,6 +57,7 @@ class User {
       apiToken: data['api_token'],
       type: data['type'],
       profilePic: data['profile_pic'],
+      identityPic: data['identity_pic'],
       createdAt: DateTime.parse(data['created_at']) ?? null,
       activities: [],
     );
@@ -155,7 +157,7 @@ class User {
   }
 
   Future getActivities(BuildContext context, GlobalKey _scaffoldKey,
-      {showLoad = true}) async {
+      {showLoad = true, @required String from, @required String to}) async {
     var user = Provider.of<UserModel>(context, listen: false);
     try {
       //var user = Provider.of<UserModel>(context);
@@ -163,7 +165,7 @@ class User {
         user.setLoading(true);
       }
       final response = await http.get(
-          '${user.hostUrl}/api/user/${user.user.id}/activity?api_token=${this.apiToken}',
+          '${user.hostUrl}/api/user/${user.user.id}/activity?api_token=${this.apiToken}&from=$from&to=$to',
           headers: {
             'Accept': 'application/json',
           });

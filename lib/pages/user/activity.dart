@@ -7,6 +7,7 @@ import '../../models/user.dart';
 import '../../providers/user.dart';
 import '../../values.dart';
 import '../../widgets.dart';
+import 'dart:async';
 
 class Activity extends StatefulWidget {
   User user;
@@ -17,7 +18,9 @@ class Activity extends StatefulWidget {
 
 class _ActivityState extends State<Activity> {
   final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  DateTime now = DateTime.now();
+  DateTime from = DateTime.now();
+  DateTime to = DateTime.now();
   @override
   void initState() {
     super.initState();
@@ -27,17 +30,44 @@ class _ActivityState extends State<Activity> {
   getActivitys({reload = false}) async {
     //print(widget.user.activities);
     if (widget.user.activities.isEmpty || reload) {
-      await widget.user.getActivities(context, _scaffoldKey);
-      /* .then((e) {
-        var user = Provider.of<UserModel>(context, listen: false);
-        Investment invest = user.user.investments
-            .where((i) => i.id == widget.investment.id)
-            .first;
-        //print(invest);
-        widget.investment.earnings = invest.earnings;
-        setState(() {});
-      }); */
+      String _from = from != null
+          ? DateFormat("dd-MM-yyyy").format(from)
+          : DateFormat("dd-MM-yyyy").format(now);
+      String _to = from != null
+          ? DateFormat("dd-MM-yyyy").format(to)
+          : DateFormat("dd-MM-yyyy").format(now);
+      await widget.user
+          .getActivities(context, _scaffoldKey, from: _from, to: _to);
     }
+  }
+
+  Future<DateTime> _selectDate(BuildContext context, DateTime initial) async {
+    initial = initial != null ? initial : now;
+    initial = initial.isBefore(now) ? now : now.subtract(Duration(days: 1));
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: initial,
+        firstDate: DateTime(2020),
+        lastDate: now);
+    return picked;
+  }
+
+  Future getTo(BuildContext context) async {
+    var date = await _selectDate(context, to);
+    setState(() {
+      to = date;
+    });
+
+    if (from != null && from.isBefore(to)) return getActivitys(reload: true);
+  }
+
+  Future getFrom(BuildContext context) async {
+    var date = await _selectDate(context, from);
+    setState(() {
+      from = date;
+    });
+
+    if (to != null && to.isAfter(from)) return getActivitys(reload: true);
   }
 
   @override
@@ -58,7 +88,6 @@ class _ActivityState extends State<Activity> {
   }
 
   body(user) {
-    var now = DateTime.now();
     return ListView(
       padding: EdgeInsets.all(20.0),
       children: <Widget>[
@@ -81,9 +110,22 @@ class _ActivityState extends State<Activity> {
                   color: primaryColor,
                 ),
               ),
-              SizedBox(width: 15),
-              Widgets.text(DateFormat("dd-MM-yyyy").format(now)),
-              SizedBox(width: 15),
+              SizedBox(width: 10),
+              InkWell(
+                  onTap: () => getFrom(context),
+                  child: Widgets.text(DateFormat("dd-MM-yyyy").format(from))),
+              SizedBox(width: 10),
+              Expanded(
+                child: Container(
+                  height: 1,
+                  color: primaryColor,
+                ),
+              ),
+              SizedBox(width: 10),
+              InkWell(
+                  onTap: () => getTo(context),
+                  child: Widgets.text(DateFormat("dd-MM-yyyy").format(to))),
+              SizedBox(width: 10),
               Expanded(
                 child: Container(
                   height: 1,

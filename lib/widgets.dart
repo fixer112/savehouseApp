@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:savehouse/pages/widgets/imagepreview.dart';
 
 import 'pages/home.dart';
 import 'pages/user/account.dart';
@@ -124,7 +125,8 @@ class Widgets {
                           ),
                     onPressed: () {
                       if (icon == 1 && context != null) {
-                        showEditProfile(context);
+                        showImagePreview(context, image);
+                        //showEditProfile(context);
                       } else if (context != null) {
                         Get.to(Account());
                       }

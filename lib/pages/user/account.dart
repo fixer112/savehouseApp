@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:savehouse/pages/auth/login.dart';
 import 'package:savehouse/pages/widgets/editprofile.dart';
+import 'package:savehouse/pages/widgets/imagepreview.dart';
 import 'package:savehouse/providers/user.dart';
 import 'package:savehouse/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,11 +19,15 @@ class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        padding: EdgeInsets.all(20),
-        children: <Widget>[
-          Consumer<UserModel>(builder: (context, user, child) {
-            return Widgets.pageTitle(
+      body: Consumer<UserModel>(builder: (context, user, child) {
+        var image = Image.network(
+          user.hostUrl + user.user.identityPic,
+          fit: BoxFit.fill,
+        );
+        return ListView(
+          padding: EdgeInsets.all(20),
+          children: <Widget>[
+            Widgets.pageTitle(
               'My Account',
               user.user.fullname,
               icon: 1,
@@ -30,67 +35,82 @@ class _AccountState extends State<Account> {
               image: CircleAvatar(
                   backgroundImage:
                       NetworkImage(user.hostUrl + user.user.profilePic)),
-            );
-          }),
-          SizedBox(height: 40),
-          Column(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                margin: EdgeInsets.only(bottom: 15.0),
-                decoration: BoxDecoration(
-                  border: Border.all(color: shyColor),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: ListTile(
-                  contentPadding: EdgeInsets.all(0),
-                  leading: Icon(
-                    FontAwesomeIcons.userEdit,
-                    size: 25,
-                  ),
-                  title: Widgets.text(
-                    'Edit Profile',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                  onTap: () {
-                    showEditProfile(context);
-                  },
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.blue.withOpacity(.4),
+              ),
+              height: 150,
+              child: InkWell(
+                onTap: () => showImagePreview(context, image),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: image,
                 ),
               ),
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                margin: EdgeInsets.only(bottom: 15.0),
-                decoration: BoxDecoration(
-                  border: Border.all(color: shyColor),
-                  borderRadius: BorderRadius.circular(5),
+            ),
+            SizedBox(height: 40),
+            Column(
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  margin: EdgeInsets.only(bottom: 15.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: shyColor),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(0),
+                    leading: Icon(
+                      FontAwesomeIcons.userEdit,
+                      size: 25,
+                    ),
+                    title: Widgets.text(
+                      'Edit Profile',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                    onTap: () {
+                      showEditProfile(context);
+                    },
+                  ),
                 ),
-                child: ListTile(
-                  contentPadding: EdgeInsets.all(0),
-                  leading: Icon(
-                    FontAwesomeIcons.signOutAlt,
-                    size: 25,
-                    color: Colors.red,
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  margin: EdgeInsets.only(bottom: 15.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: shyColor),
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  trailing: Icon(
-                    Icons.chevron_right,
-                    size: 22,
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(0),
+                    leading: Icon(
+                      FontAwesomeIcons.signOutAlt,
+                      size: 25,
+                      color: Colors.red,
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right,
+                      size: 22,
+                    ),
+                    title: Widgets.text(
+                      'Logout',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Colors.red,
+                    ),
+                    onTap: () => Get.to(Login()),
                   ),
-                  title: Widgets.text(
-                    'Logout',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: Colors.red,
-                  ),
-                  onTap: () => Get.to(Login()),
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            ),
+          ],
+        );
+      }),
       bottomNavigationBar: Widgets.bottomNav(3, context),
     );
   }
