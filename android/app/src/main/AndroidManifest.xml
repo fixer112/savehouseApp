@@ -11,7 +11,7 @@
          <!-- io.flutter.app.FlutterApplication -->
     <application
         android:name=".Application"
-        android:label="Savehouse Capital"
+        android:label="Safehouse Capital"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

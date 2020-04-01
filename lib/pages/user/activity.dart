@@ -54,20 +54,26 @@ class _ActivityState extends State<Activity> {
 
   Future getTo(BuildContext context) async {
     var date = await _selectDate(context, to);
-    setState(() {
-      to = date;
-    });
+    print(date);
+    if (date != null) {
+      setState(() {
+        to = date;
+      });
 
-    if (from != null && from.isBefore(to)) return getActivitys(reload: true);
+      if (from != null && from.isBefore(to)) return getActivitys(reload: true);
+    }
   }
 
   Future getFrom(BuildContext context) async {
     var date = await _selectDate(context, from);
-    setState(() {
-      from = date;
-    });
+    print(date);
+    if (date != null) {
+      setState(() {
+        from = date;
+      });
 
-    if (to != null && to.isAfter(from)) return getActivitys(reload: true);
+      if (to != null && to.isAfter(from)) return getActivitys(reload: true);
+    }
   }
 
   @override

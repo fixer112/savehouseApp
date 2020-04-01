@@ -36,6 +36,11 @@ class MyApp extends StatelessWidget {
       //title: 'Flutter Demo',
       navigatorKey: Get.key,
       theme: ThemeData(
+          primaryColor: primaryColor,
+          cursorColor: primaryColor,
+          primarySwatch: primarySwatch,
+          backgroundColor: shyColor,
+          iconTheme: IconThemeData(color: whiteColor)
           /* textTheme: GoogleFonts.latoTextTheme(
           Theme.of(context).textTheme,
         ), */

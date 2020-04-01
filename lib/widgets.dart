@@ -159,7 +159,7 @@ class Widgets {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.satellite,
+            Icons.save,
             color: (index == 1 ? primaryColor : Colors.grey),
           ),
           title: Text(
@@ -423,7 +423,10 @@ class Widgets {
   static floatReloadButton(action) {
     return FloatingActionButton(
       backgroundColor: primaryColor,
-      child: Icon(Icons.replay),
+      child: Icon(
+        Icons.replay,
+        color: whiteColor,
+      ),
       onPressed: () {
         //print(action().runtimeType);
         action();
@@ -483,12 +486,6 @@ class _LogoState extends State<Logo> with TickerProviderStateMixin {
       scale: animation,
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(100)),
-        /* decoration: BoxDecoration(
-            color: primaryColor,
-            borderRadius: BorderRadius.all(Radius.circular(100))), */
-        ////color: primaryColor,
-        //height: 100,
-        //width: 100,
         child: Container(
           color: primaryColor,
           child: Image.asset(

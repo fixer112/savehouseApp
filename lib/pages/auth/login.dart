@@ -76,7 +76,8 @@ class _LoginState extends State<Login> {
   @override
   Widget build(context) {
     //var main = Provider.of<MainModel>(context, listen: false);
-    print(Theme.of(context).textTheme);
+
+    print(primarySwatch.toString());
     return Scaffold(
       key: _scaffoldKey,
       //backgroundColor: Colors.white,

@@ -9,8 +9,9 @@ import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:savehouse/pages/auth/login.dart';
 import 'package:savehouse/providers/user.dart';
-import 'package:savehouse/values.dart';
-import 'package:savehouse/widgets.dart';
+
+import 'values.dart';
+import 'widgets.dart';
 
 final String connErrorMsg = 'Connection Failed';
 

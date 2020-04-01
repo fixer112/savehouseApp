@@ -33,16 +33,15 @@ class _HomeState extends State<Home> {
 
     var user = Provider.of<UserModel>(context, listen: false);
 
+    /* if (kReleaseMode) {
     int timeOut = user.getConfig.getInt('timeout');
-
-    if (kReleaseMode) {
       print('timeout $timeOut');
       Timer.periodic(Duration(minutes: timeOut), (time) {
         time.cancel();
         Get.to(Login());
         getSnack('Timeout', 'You are forced to relogin after $timeOut minutes');
       });
-    }
+    } */
 
     firebaseMessaging.getToken().then((token) async {
       print('FCM Token: $token');
