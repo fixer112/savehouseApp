@@ -52,7 +52,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: assets/images/launch.jpeg
+  image_path: assets/images/finncube.png
 
 
 # For information on the generic Dart part of this file, see the
@@ -71,6 +71,8 @@ flutter:
     - assets/images/splash.jpg
     - assets/images/launch.jpeg
     - assets/images/deal.png
+    - assets/images/finncube.png
+    - assets/images/artboard_1.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
@@ -92,6 +94,11 @@ flutter:
       fonts:
         - asset: assets/fonts/mavin/MavenPro-Regular.ttf
         - asset: assets/fonts/mavin/MavenPro-Bold.ttf
+          weight: 700
+    - family: Qanelas
+      fonts:
+        - asset: assets/fonts/qanelas/Qanelas-Regular.ttf
+        - asset: assets/fonts/qanelas/Qanelas-Bold.ttf
           weight: 700
        # - asset: assets/fonts/mavin/MavenPro-Black.ttf
         #- asset: assets/fonts/mavin/MavenPro-Medium.ttf

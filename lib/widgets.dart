@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +40,7 @@ class Widgets {
         fontSize: fontSize,
         fontWeight: fontWeight,
         color: color,
-        fontFamily: "MavinPro",
+        fontFamily: "Qanelas",
       ),
     );
   }
@@ -81,7 +82,7 @@ class Widgets {
               hintStyle: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontFamily: "MavinPro")),
+                  fontFamily: "Qanelas")),
           obscureText: type == TextInputType.visiblePassword ? true : false,
           keyboardType: type),
     );
@@ -100,7 +101,7 @@ class Widgets {
                   style: TextStyle(
                       fontSize: 27.0,
                       fontWeight: FontWeight.w900,
-                      fontFamily: 'MavinPro'),
+                      fontFamily: 'Qanelas'),
                 ),
                 SizedBox(height: 4),
                 Text(
@@ -108,7 +109,7 @@ class Widgets {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
-                    fontFamily: "MavinPro",
+                    fontFamily: "Qanelas",
                   ),
                 ),
               ],
@@ -153,7 +154,7 @@ class Widgets {
             style: TextStyle(
               fontSize: 12.0,
               fontWeight: FontWeight.bold,
-              fontFamily: "MavinPro",
+              fontFamily: "Qanelas",
             ),
           ),
         ),
@@ -167,7 +168,7 @@ class Widgets {
             style: TextStyle(
               fontSize: 12.0,
               fontWeight: FontWeight.bold,
-              fontFamily: "MavinPro",
+              fontFamily: "Qanelas",
             ),
           ),
         ),
@@ -181,7 +182,7 @@ class Widgets {
             style: TextStyle(
               fontSize: 12.0,
               fontWeight: FontWeight.bold,
-              fontFamily: "MavinPro",
+              fontFamily: "Qanelas",
             ),
           ),
         ),
@@ -195,7 +196,7 @@ class Widgets {
             style: TextStyle(
               fontSize: 12.0,
               fontWeight: FontWeight.bold,
-              fontFamily: "MavinPro",
+              fontFamily: "Qanelas",
             ),
           ),
         ),
@@ -265,7 +266,7 @@ class Widgets {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: index == cls.current ? Colors.white : null,
-                            fontFamily: "MavinPro",
+                            fontFamily: "Qanelas",
                           ),
                         ),
                         onTap: () {
@@ -292,7 +293,7 @@ class Widgets {
                   'No Investment Available',
                   style: TextStyle(
                     fontSize: 20,
-                    fontFamily: "MavinPro",
+                    fontFamily: "Qanelas",
                     /* shadows: Widgets.textShadows(color: shyColor) */
                   ),
                   textAlign: TextAlign.center,
@@ -324,7 +325,7 @@ class Widgets {
         style: TextStyle(
           fontSize: 13,
           color: Colors.white,
-          fontFamily: "MavinPro",
+          fontFamily: "Qanelas",
         ),
       ),
     );
@@ -342,7 +343,7 @@ class Widgets {
         style: TextStyle(
           fontSize: 13,
           color: Colors.white,
-          fontFamily: "MavinPro",
+          fontFamily: "Qanelas",
         ),
       ),
     );
@@ -360,7 +361,7 @@ class Widgets {
         style: TextStyle(
           fontSize: 13,
           color: Colors.white,
-          fontFamily: "MavinPro",
+          fontFamily: "Qanelas",
         ),
       ),
     );
@@ -378,7 +379,7 @@ class Widgets {
         style: TextStyle(
           fontSize: 13,
           color: Colors.white,
-          fontFamily: "MavinPro",
+          fontFamily: "Qanelas",
         ),
       ),
     );
@@ -389,9 +390,24 @@ class Widgets {
     return '₦' + f.format(number); //globals.formatCurrency.format(number);
   }
 
+  static logo() {
+    return Transform.rotate(
+      angle: 360,
+      child: Image.asset(
+        "assets/images/finncube.png",
+        height: 100,
+        width: 100,
+        fit: BoxFit.fill,
+      ),
+    );
+  }
+
   static loader(UserModel user) {
     return user.isloading
-        ? Center(
+        ? /* Center(
+            child: Widgets.logo(),
+          ) */
+        Center(
             child:
                 Logo() /* CircularProgressIndicator(
             strokeWidth: 3,
@@ -443,7 +459,8 @@ class Widgets {
       child: Text(
         text,
         style: TextStyle(
-          fontFamily: "MavinPro",
+          fontFamily: "Qanelas",
+          fontWeight: FontWeight.bold,
         ),
       ),
       onPressed: () => action(),
@@ -467,11 +484,13 @@ class _LogoState extends State<Logo> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     controller = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this);
-    animation = Tween(begin: 0.5, end: 1.0)
-        .animate(CurvedAnimation(parent: controller, curve: Curves.ease));
+        duration: const Duration(milliseconds: 1000), vsync: this);
+    /* animation = Tween(begin: 0.5, end: 1.0)
+        .animate(CurvedAnimation(parent: controller, curve: Curves.ease)); */
+    animation = Tween(begin: 0.0, end: 1.0).animate(controller);
 
-    controller.repeat(reverse: true);
+    //controller.repeat(reverse: true);
+    controller.repeat();
   }
 
   @override
@@ -482,7 +501,20 @@ class _LogoState extends State<Logo> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleTransition(
+    return RotationTransition(
+        turns: Tween(begin: 0.0, end: 1.0).animate(controller),
+        child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(50)),
+            child: Container(
+              color: primaryColor,
+              child: Image.asset(
+                "assets/images/finncube.png",
+                height: 80,
+                width: 80,
+                fit: BoxFit.fill,
+              ),
+            )));
+    /* ScaleTransition(
       scale: animation,
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(100)),
@@ -496,6 +528,6 @@ class _LogoState extends State<Logo> with TickerProviderStateMixin {
           ),
         ),
       ),
-    );
+    ); */
   }
 }

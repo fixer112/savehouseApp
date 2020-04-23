@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:savehouse/widgets.dart';
 
 import '../values.dart';
 import 'auth/login.dart';
 
 Widget splashScreen() {
   return MaterialApp(
-    title: 'D',
+    //title: 'D',
     theme: ThemeData(
       primarySwatch: Colors.blue,
     ),
@@ -50,7 +51,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
             }
           });
     controller.forward(); */
-    loading();
+    //loading();
   }
 
   @override
@@ -71,12 +72,32 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      body: Image.asset(
+      body: Stack(
+        children: <Widget>[
+          Image.asset(
+            "assets/images/artboard_1.png",
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.fill,
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: 250,
+                child: Widgets.button('LOGIN', () => Get.off(Login())),
+              ),
+            ),
+          )
+        ],
+      ),
+      /* Image.asset(
         "assets/images/splash.jpg",
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         fit: BoxFit.fill,
-      ), /* ScaleTransition(
+      ), */ /* ScaleTransition(
           scale: animation,
           child: Center(
             child: Image.asset("assets/images/splash.png"),

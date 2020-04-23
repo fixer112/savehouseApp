@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:savehouse/pages/auth/login.dart';
 import 'values.dart';
 
 import 'pages/splashcreen.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ), */
           ),
-      home: splashScreen(),
+      home: /*  Login(), */ splashScreen(),
     );
   }
 }
