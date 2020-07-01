@@ -84,8 +84,6 @@ class _InvestState extends State<Invest> {
 
     var publicKey = user.user.settings['paystack_key'];
 
-    // print('user_id:${user.user.id}');
-
     PaystackPlugin.initialize(publicKey: publicKey);
   }
 
