@@ -39,7 +39,7 @@ dependencies:
   random_string: ^2.0.1
   #quick_actions: ^0.4.0+2
   firebase_remote_config: ^0.3.0+3
-  get: ^1.17.3
+  get: ^3.2.1
   google_fonts: ^0.2.0
 
   
@@ -69,10 +69,14 @@ flutter:
     - assets/images/logo.png
     - assets/images/splash.png
     - assets/images/splash.jpg
+    - assets/images/mining.jpg
+    - assets/images/agric.jpg
+    - assets/images/estate.jpg
     - assets/images/launch.jpeg
     - assets/images/deal.png
     - assets/images/finncube.png
-    - assets/images/artboard_1.png
+    - assets/images/artboard_1.jpg
+    - assets/images/splashscreen.jpg
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

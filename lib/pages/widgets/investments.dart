@@ -88,6 +88,8 @@ Widget investmentEach(context, Investment investment, UserModel user) {
                     ],
                   ),
                 ),
+                Widgets.text('${investment.roi?.toString()}% per month',
+                    fontSize: 15),
                 investment.startDate.contains('pending')
                     ? Padding(
                         padding: EdgeInsets.only(bottom: 10),
@@ -115,15 +117,16 @@ Widget investmentEach(context, Investment investment, UserModel user) {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Container(
-                      child: Widgets.text(investment.type.toUpperCase()),
+                      child: Widgets.text(
+                          "${investment.type.toUpperCase()} (${investment.subType?.toLowerCase()})"),
                       decoration: BoxDecoration(color: shyColor),
                       padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
                     ),
-                    SizedBox(width: 15),
-                    Widgets.status(
-                        investment.activeStatus, investment.isActive),
+                    //SizedBox(width: 15),
                   ],
                 ),
+                SizedBox(height: 15),
+                Widgets.status(investment.activeStatus, investment.isActive),
               ],
             ),
           ),

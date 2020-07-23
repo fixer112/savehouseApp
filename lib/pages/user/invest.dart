@@ -28,8 +28,11 @@ class _InvestState extends State<Invest> {
   var loading = false;
 
   var amount = TextEditingController();
-  String duration;
+  var duration = TextEditingController();
+  //String duration;
   String type;
+  String subType;
+  List subTypes = [];
   String method;
   File _image;
 
@@ -54,7 +57,8 @@ class _InvestState extends State<Invest> {
       //var d = Map<String, dynamic>.from(data);
       request.fields['amount'] = amount.text;
       request.fields['type'] = type;
-      request.fields['duration'] = duration;
+      request.fields['sub_type'] = subType;
+      request.fields['duration'] = duration.text;
 
       //if (_image != null) {
       request.files
@@ -94,14 +98,16 @@ class _InvestState extends State<Invest> {
   checkOut(BuildContext context,
       {@required UserModel user,
       @required String type,
-      @required int duration,
+      @required String subType,
+      //@required int duration,
       @required int amount}) async {
     Charge charge = Charge()
       ..amount = amount * 100
       ..reference = _getReference(user.user.id)
       ..putMetaData('user_id', user.user.id)
       ..putMetaData('type', type)
-      ..putMetaData('duration', duration)
+      ..putMetaData('sub_type', subType)
+      //..putMetaData('duration', duration)
       ..email = user.user.email;
 
     CheckoutResponse res = await PaystackPlugin.checkout(
@@ -155,33 +161,47 @@ class _InvestState extends State<Invest> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      body: Consumer<UserModel>(builder: (context, user, child) {
-        var durations = user.user.settings['investment_durations'];
-        var types = user.user.settings['investments'];
-        return Stack(children: [
-          ListView(
-            padding: EdgeInsets.all(20.0),
-            children: <Widget>[
-              Widgets.pageTitle(
-                'Invest',
-                'start a new journey, savely',
-                context: context,
-                icon: false,
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Widgets.text('Amount to Invest', fontWeight: FontWeight.bold),
-              Widgets.textField(
-                amount,
-                TextInputType.numberWithOptions(),
-                prefix: Widgets.text("NGN ", fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 25),
-              Widgets.text('Duration to Invest', fontWeight: FontWeight.bold),
-              Padding(
+    return WillPopScope(
+        onWillPop: () {
+          return new Future(() => false);
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          body: Consumer<UserModel>(builder: (context, user, child) {
+            //var durations = user.user.settings['investment_durations'];
+            //var minDuration = user.user.settings['investment_min_duration'];
+            var types = user.user.settings['investments'].keys.toList();
+            //print(types);
+            //return Container();
+            return Stack(children: [
+              ListView(
+                padding: EdgeInsets.all(20.0),
+                children: <Widget>[
+                  Widgets.pageTitle(
+                    'Invest',
+                    'start a new journey, savely',
+                    context: context,
+                    icon: false,
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Widgets.text('Amount to Invest', fontWeight: FontWeight.bold),
+                  Widgets.textField(
+                    amount,
+                    TextInputType.numberWithOptions(),
+                    prefix: Widgets.text("NGN ", fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 25),
+                  /* Widgets.text('Duration to Invest',
+                      fontWeight: FontWeight.bold),
+                  Widgets.textField(
+                    duration,
+                    TextInputType.numberWithOptions(),
+                    suffix:
+                        Widgets.text(" MONTHS", fontWeight: FontWeight.bold),
+                  ), */
+                  /* Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: DropdownButton(
                   items: List.generate(durations.length, (index) {
@@ -197,115 +217,147 @@ class _InvestState extends State<Invest> {
                     });
                   },
                 ),
-              ),
-              SizedBox(height: 25),
-              Widgets.text('Investment type', fontWeight: FontWeight.bold),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: DropdownButton(
-                  items: List.generate(types.length, (index) {
-                    //var key = investments.keys.toList()[index];
-                    var string = types[index].toString();
-                    return Widgets.dropItem(string, string);
-                  }),
-                  hint: Widgets.text('Select Type'),
-                  value: type,
-                  onChanged: (value) {
-                    setState(() {
-                      type = value;
-                    });
-                  },
-                ),
-              ),
-              SizedBox(height: 25),
-              Widgets.text('Method of payment', fontWeight: FontWeight.bold),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: DropdownButton<String>(
-                  items: [
-                    Widgets.dropItem('Online Payment', 'online'),
-                    Widgets.dropItem('Proof Payment', 'proof'),
-                  ],
-                  hint: Widgets.text('Select Method'),
-                  value: method,
-                  onChanged: (value) {
-                    setState(() {
-                      method = value;
-                    });
-                  },
-                ),
-              ),
-              SizedBox(height: 25),
-              method == 'proof'
-                  ? Column(
-                      // shrinkWrap: true,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Widgets.text('Choose Proof of payment',
-                            fontWeight: FontWeight.bold),
-                        SizedBox(height: 15),
-                        Row(
-                          children: <Widget>[
-                            FlatButton(
-                              color: secondaryColor,
-                              child: Widgets.text(
-                                _image != null
-                                    ? 'Change Proof'
-                                    : 'Choose Proof',
-                              ),
-                              onPressed: () => getImage(),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 20),
-                            ),
-                            _image != null
-                                ? InkWell(
-                                    child: CircleAvatar(
-                                      backgroundImage: FileImage(_image),
-                                    ),
-                                    onTap: () => showImagePreview(
-                                        context, Image.file(_image)),
-                                  )
-                                : Container()
-                          ],
-                        ),
-                        SizedBox(height: 25),
+              ), */
+                  SizedBox(height: 25),
+                  Widgets.text('Investment type', fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: DropdownButton(
+                      items: List.generate(types.length, (index) {
+                        //var key = investments.keys.toList()[index];
+                        var string = types[index].toString();
+                        return Widgets.dropItem(string.toUpperCase(), string);
+                      }),
+                      hint: Widgets.text('Select Type'),
+                      value: type,
+                      onChanged: (value) {
+                        setState(() {
+                          type = value;
+                          subTypes = user
+                              .user.settings['investments'][type].keys
+                              .toList();
+                          //print(subTypes);
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 25),
+                  Widgets.text('Investment SubType',
+                      fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: DropdownButton(
+                      isExpanded: true,
+                      items: List.generate(subTypes.length, (index) {
+                        //var key = investments.keys.toList()[index];
+                        var string = subTypes[index].toString();
+                        var sub =
+                            user.user.settings['investments'][type][string];
+                        return Widgets.dropItem(
+                            "${string.toUpperCase()} (${sub['roi']}% per month) for ${sub['duration']} months",
+                            string);
+                      }),
+                      hint: Widgets.text('Select subType'),
+                      value: subType,
+                      onChanged: (value) {
+                        setState(() {
+                          type = value;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 25),
+                  Widgets.text('Method of payment',
+                      fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: DropdownButton<String>(
+                      items: [
+                        Widgets.dropItem('Online Payment', 'online'),
+                        Widgets.dropItem('Proof Payment', 'proof'),
                       ],
-                    )
-                  : Container(),
-              Widgets.button('Invest', () {
-                //print(amount.text);
-                int minAmount = user.user.settings['minimum_amount'];
-                if (!user.isloading) {
-                  //print(duration);
-                  if ([amount.text, duration, type, method].contains(null)) {
-                    return getSnack('Error', 'All fields required');
-                  }
-                  if (int.parse(amount.text) < minAmount) {
-                    return getSnack(
-                        'Error', 'Minimum amount allowed is $minAmount');
-                  }
-                  if (method == 'online') {
-                    return checkOut(context,
-                        user: user,
-                        duration: int.parse(duration),
-                        type: type,
-                        amount: int.parse(amount.text));
-                  }
-                  if (method == 'proof') {
-                    return _image != null
-                        ? addInvestment(context, _scaffoldKey)
-                        : getSnack('Error', 'No proof selected');
-                  }
-                }
-                closeKeybord(context);
-              }),
-            ],
-          ),
-          Widgets.loader(user)
-        ]);
-      }),
-      bottomNavigationBar: Widgets.bottomNav(1, context),
-    );
+                      hint: Widgets.text('Select Method'),
+                      value: method,
+                      onChanged: (value) {
+                        setState(() {
+                          method = value;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 25),
+                  method == 'proof'
+                      ? Column(
+                          // shrinkWrap: true,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Widgets.text('Choose Proof of payment',
+                                fontWeight: FontWeight.bold),
+                            SizedBox(height: 15),
+                            Row(
+                              children: <Widget>[
+                                FlatButton(
+                                  color: secondaryColor,
+                                  child: Widgets.text(
+                                    _image != null
+                                        ? 'Change Proof'
+                                        : 'Choose Proof',
+                                  ),
+                                  onPressed: () => getImage(),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 20),
+                                ),
+                                _image != null
+                                    ? InkWell(
+                                        child: CircleAvatar(
+                                          backgroundImage: FileImage(_image),
+                                        ),
+                                        onTap: () => showImagePreview(
+                                            context, Image.file(_image)),
+                                      )
+                                    : Container()
+                              ],
+                            ),
+                            SizedBox(height: 25),
+                          ],
+                        )
+                      : Container(),
+                  Widgets.button('Invest', () {
+                    //print(amount.text);
+                    int minAmount = user.user.settings['minimum_amount'];
+                    if (!user.isloading) {
+                      //print(duration);
+                      if ([amount.text, duration, type, method]
+                          .contains(null)) {
+                        return getSnack('Error', 'All fields required');
+                      }
+                      if (int.parse(amount.text) < minAmount) {
+                        return getSnack(
+                            'Error', 'Minimum amount allowed is $minAmount');
+                      }
+                      if (method == 'online') {
+                        return checkOut(context,
+                            user: user,
+                            //duration: int.parse(duration.text),
+                            type: type,
+                            subType: subType,
+                            amount: int.parse(amount.text));
+                      }
+                      if (method == 'proof') {
+                        return _image != null
+                            ? addInvestment(context, _scaffoldKey)
+                            : getSnack('Error', 'No proof selected');
+                      }
+                    }
+                    closeKeybord(context);
+                  }),
+                ],
+              ),
+              Widgets.loader(user)
+            ]);
+          }),
+          bottomNavigationBar: Widgets.bottomNav(1, context),
+        ));
   }
 }

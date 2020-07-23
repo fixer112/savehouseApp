@@ -103,7 +103,7 @@ class User {
           });
       user.setLoading(false);
       var body = json.decode(response.body);
-      //print(body);
+      print(body);
       request(response, () {
         this.investments = List<Investment>.from(
             body['investments'].map((i) => Investment.fromMap(i)).toList());
@@ -194,9 +194,8 @@ class User {
   Map<String, Investments> investmentToggle() {
     Map<String, Investments> investments = {};
     investments.addAll({'all': Investments(this.investments)});
-    this
-        .settings['investments']
-        .forEach((i) => investments.addAll({i: Investments(searchType(i))}));
+    this.settings['investments'].forEach(
+        (type, i) => investments.addAll({type: Investments(searchType(type))}));
     return investments;
   }
 

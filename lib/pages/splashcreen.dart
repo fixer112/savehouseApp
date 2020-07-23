@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:savehouse/pages/land.dart';
 import 'package:savehouse/widgets.dart';
 
 import '../values.dart';
@@ -28,30 +29,8 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    // var t= Timer(Duration(seconds: 10), Get.to(Splash()));
-    /* Future.delayed(Duration(seconds: 20), () {
-      getSnack('Timeout', 'You are forced to re-login after 20 minutes');
-      Get.to(Login());
-    }); */
-    /* controller = AnimationController(
-        duration: const Duration(milliseconds: 1500), vsync: this);
-    
 
-    animation = Tween(begin: 1.0, end: 1.5)
-        .animate(CurvedAnimation(parent: controller, curve: Curves.bounceIn))
-          ..addListener(() {
-            setState(() {});
-          })
-          ..addStatusListener((status) {
-            if (status == AnimationStatus.completed) {
-              controller.reverse();
-            }
-            else if (status == AnimationStatus.dismissed) {
-              controller.forward();
-            }
-          });
-    controller.forward(); */
-    //loading();
+    loading();
   }
 
   @override
@@ -61,26 +40,30 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
   }
 
   Future<Timer> loading() async {
-    return Timer(Duration(seconds: 2), onDoneLoading);
+    return Timer(Duration(seconds: 3), onDoneLoading);
   }
 
   onDoneLoading() async {
-    Get.off(Login());
+    Get.off(Land());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: primaryColor,
-      body: Stack(
-        children: <Widget>[
-          Image.asset(
-            "assets/images/artboard_1.png",
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.fill,
-          ),
-          Align(
+    return WillPopScope(
+        onWillPop: () {
+          return new Future(() => false);
+        },
+        child: Scaffold(
+          backgroundColor: whiteColor,
+          body: Stack(
+            children: <Widget>[
+              Image.asset(
+                "assets/images/splashscreen.jpg",
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.fill,
+              ),
+              /* Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -89,10 +72,10 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
                 child: Widgets.button('LOGIN', () => Get.off(Login())),
               ),
             ),
-          )
-        ],
-      ),
-      /* Image.asset(
+          ) */
+            ],
+          ),
+          /* Image.asset(
         "assets/images/splash.jpg",
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -103,6 +86,6 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
             child: Image.asset("assets/images/splash.png"),
           ),
         ), */
-    );
+        ));
   }
 }

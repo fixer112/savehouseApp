@@ -21,14 +21,14 @@ class Widgets {
       child: Row(
         children: <Widget>[
           //Icon(Icons.filter_1),
-          Text(text),
+          SizedBox(width: 200.0, child: Text(text)),
         ],
       ),
       value: value,
     );
   }
 
-  static text(String text,
+  static Widget text(String text,
       {double fontSize = 13,
       FontWeight fontWeight = FontWeight.normal,
       Color color = Colors.black,
@@ -45,8 +45,14 @@ class Widgets {
     );
   }
 
-  static textField(TextEditingController controller, TextInputType type,
-      {bool enabled = true, String hintText = "", Widget prefix}) {
+  static textField(
+    TextEditingController controller,
+    TextInputType type, {
+    bool enabled = true,
+    String hintText = "",
+    Widget prefix,
+    Widget suffix,
+  }) {
     return Container(
       height: 40.0,
       margin: EdgeInsets.only(top: 5.0),
@@ -55,6 +61,7 @@ class Widgets {
           controller: controller,
           decoration: InputDecoration(
               prefix: prefix != null ? prefix : Text(""),
+              suffix: suffix,
               contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
               fillColor: enabled ? Colors.white : shyColor,
               filled: true,
@@ -387,7 +394,7 @@ class Widgets {
 
   static currency(number) {
     var f = NumberFormat("#,###");
-    return '₦' + f.format(number); //globals.formatCurrency.format(number);
+    return 'NGN' + f.format(number); //globals.formatCurrency.format(number);
   }
 
   static logo() {
@@ -451,11 +458,11 @@ class Widgets {
     );
   }
 
-  static button(text, Function action, {Color color}) {
+  static Widget button(text, Function action, {Color color}) {
     return RaisedButton(
       padding: EdgeInsets.all(15),
       textColor: Colors.white,
-      color: color == null ? primaryColor : color,
+      color: color == null ? secondaryColor : color,
       child: Text(
         text,
         style: TextStyle(

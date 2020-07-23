@@ -91,33 +91,37 @@ class _InvestmentState extends State<InvestmentWidget> {
   Widget build(BuildContext context) {
     //print(widget.investment.earnings);
     getBalance();
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: whiteColor,
-        elevation: 0,
-        title: Widgets.text(widget.investment.ref,
-            color: secondaryColor, fontWeight: FontWeight.bold),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.keyboard_arrow_left,
-            color: secondaryColor,
+    return WillPopScope(
+        onWillPop: () {
+          return new Future(() => false);
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: AppBar(
+            backgroundColor: whiteColor,
+            elevation: 0,
+            title: Widgets.text(widget.investment.ref,
+                color: secondaryColor, fontWeight: FontWeight.bold),
+            centerTitle: true,
+            leading: IconButton(
+              icon: Icon(
+                Icons.keyboard_arrow_left,
+                color: secondaryColor,
+              ),
+              onPressed: () {
+                Get.back();
+              },
+            ),
           ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-      ),
-      body: Consumer<UserModel>(builder: (context, user, child) {
-        return Stack(children: [
-          body(user),
-          Widgets.loader(user),
-        ]);
-      }),
-      floatingActionButton:
-          Widgets.floatReloadButton(() => getEarnings(reload: true)),
-    );
+          body: Consumer<UserModel>(builder: (context, user, child) {
+            return Stack(children: [
+              body(user),
+              Widgets.loader(user),
+            ]);
+          }),
+          floatingActionButton:
+              Widgets.floatReloadButton(() => getEarnings(reload: true)),
+        ));
   }
 
   body(user) {
@@ -185,6 +189,11 @@ class _InvestmentState extends State<InvestmentWidget> {
                       '${Widgets.ucfirst(widget.investment.type)} Investment',
                       fontSize: 15,
                       fontWeight: FontWeight.w700),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Widgets.text('${Widgets.ucfirst(widget.investment.subType)}',
+                      fontSize: 12, fontWeight: FontWeight.w700),
                 ],
               ),
               Column(
@@ -196,7 +205,8 @@ class _InvestmentState extends State<InvestmentWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Widgets.text('${widget.investment.duration} Months',
+                      Widgets.text(
+                          '${widget.investment.duration} Months (${widget.investment.roi.toString()}%)',
                           fontSize: 15),
                       IconButton(
                         icon: Icon(

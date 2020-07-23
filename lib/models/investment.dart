@@ -16,6 +16,8 @@ class Investment {
   final double amount;
   final int duration;
   final String type;
+  final String subType;
+  final double roi;
   final String proofPic;
   final DateTime approvedAt;
   final String status;
@@ -58,12 +60,15 @@ class Investment {
     this.childRoll,
     this.parentRoll,
     this.dynamicData,
+    this.roi,
+    this.subType,
   });
   factory Investment.fromMap(Map data) => Investment(
         id: data['id'],
         currency: data['currency'],
         activeStatus: data['active_status'],
         amount: double.parse(data['amount']),
+        roi: double.parse(data['roi']),
         approvedAt: data['approved_at'] != null
             ? DateTime.parse(data['approved_at'])
             : null,
@@ -78,6 +83,7 @@ class Investment {
         startDate: data['start_date'],
         status: data['status'],
         type: data['type'],
+        subType: data['sub_type'],
         userId: int.parse(data['user_id']),
         earnings: [],
         payments: [],

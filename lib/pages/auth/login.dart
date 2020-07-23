@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:savehouse/globals.dart';
+import 'package:savehouse/pages/auth/register.dart';
 
 import '../../providers/user.dart';
 import '../../values.dart';
@@ -78,27 +79,31 @@ class _LoginState extends State<Login> {
     //var main = Provider.of<MainModel>(context, listen: false);
 
     print(primarySwatch.toString());
-    return Scaffold(
-      key: _scaffoldKey,
-      //backgroundColor: Colors.white,
+    return WillPopScope(
+        onWillPop: () {
+          return new Future(() => false);
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          //backgroundColor: Colors.white,
 
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [secondaryColor, primaryColor],
-            begin: Alignment.topCenter, // FractionalOffset(0.5, 0.0),
-            end: Alignment.bottomCenter, //FractionalOffset(0.0, 0.5),
-            stops: [0.0, 1.0], tileMode: TileMode.clamp,
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [secondaryColor, primaryColor],
+                begin: Alignment.topCenter, // FractionalOffset(0.5, 0.0),
+                end: Alignment.bottomCenter, //FractionalOffset(0.0, 0.5),
+                stops: [0.0, 1.0], tileMode: TileMode.clamp,
+              ),
+            ),
+            child: Consumer<UserModel>(builder: (context, user, child) {
+              return Stack(children: [
+                listLogin(user),
+                Widgets.loader(user),
+              ]);
+            }),
           ),
-        ),
-        child: Consumer<UserModel>(builder: (context, user, child) {
-          return Stack(children: [
-            listLogin(user),
-            Widgets.loader(user),
-          ]);
-        }),
-      ),
-    );
+        ));
   }
 
   listLogin(UserModel user) {
@@ -158,7 +163,18 @@ class _LoginState extends State<Login> {
               closeKeybord(context);
             }, /* color: Colors.transparent */
           ),
-        )
+        ),
+        InkWell(
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            alignment: Alignment.center,
+            child: Widgets.text('Dont have an account? Register',
+                fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          onTap: () {
+            Get.to(Register());
+          },
+        ),
       ],
     );
   }

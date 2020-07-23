@@ -122,21 +122,25 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      body: Consumer<UserModel>(builder: (context, user, child) {
-        return Stack(children: [
-          body(user),
-          Widgets.loader(user),
-        ]);
-      }),
-      floatingActionButton:
-          Consumer<UserModel>(builder: (context, user, child) {
-        return Widgets.floatReloadButton(
-            () => getSums(user.user, reload: true));
-      }),
-      bottomNavigationBar: Widgets.bottomNav(0, context),
-    );
+    return WillPopScope(
+        onWillPop: () {
+          return new Future(() => false);
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          body: Consumer<UserModel>(builder: (context, user, child) {
+            return Stack(children: [
+              body(user),
+              Widgets.loader(user),
+            ]);
+          }),
+          floatingActionButton:
+              Consumer<UserModel>(builder: (context, user, child) {
+            return Widgets.floatReloadButton(
+                () => getSums(user.user, reload: true));
+          }),
+          bottomNavigationBar: Widgets.bottomNav(0, context),
+        ));
   }
 
   body(UserModel user) {

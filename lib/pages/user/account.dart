@@ -103,7 +103,10 @@ class _AccountState extends State<Account> {
                       fontSize: 14,
                       color: Colors.red,
                     ),
-                    onTap: () => Get.to(Login()),
+                    onTap: () {
+                      user.user = null;
+                      Get.to(Login());
+                    },
                   ),
                 ),
               ],

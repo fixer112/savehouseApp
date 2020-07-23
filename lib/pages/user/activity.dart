@@ -78,19 +78,23 @@ class _ActivityState extends State<Activity> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Consumer<UserModel>(builder: (context, user, child) {
-        return Stack(children: [
-          body(user),
-          Widgets.loader(user),
-        ]);
-      }),
-      floatingActionButton: //Container(),
-          Widgets.floatReloadButton(() {
-        getActivitys(reload: true);
-      }),
-      bottomNavigationBar: Widgets.bottomNav(2, context),
-    );
+    return WillPopScope(
+        onWillPop: () {
+          return new Future(() => false);
+        },
+        child: Scaffold(
+          body: Consumer<UserModel>(builder: (context, user, child) {
+            return Stack(children: [
+              body(user),
+              Widgets.loader(user),
+            ]);
+          }),
+          floatingActionButton: //Container(),
+              Widgets.floatReloadButton(() {
+            getActivitys(reload: true);
+          }),
+          bottomNavigationBar: Widgets.bottomNav(2, context),
+        ));
   }
 
   body(user) {
