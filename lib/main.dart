@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:savehouse/globals.dart';
 import 'package:savehouse/pages/auth/login.dart';
 import 'values.dart';
 

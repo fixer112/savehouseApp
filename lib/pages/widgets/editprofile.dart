@@ -63,7 +63,9 @@ class _EditProfileState extends State<EditProfile>
       'occupation': occupation.text == '' ? user.occupation : occupation.text,
       'address': address.text == '' ? user.address : address.text,
       'number': number.text == '' ? user.number : number.text,
-      'dob': dob.text == '' ? user.dob : dob.text,
+      'dob': dob.text == ''
+          ? "${user.dob.month}/${user.dob.day}/${user.dob.year}"
+          : dob.text,
       'state': state == null ? user.state : state,
       'bank_name': bankName.text == '' ? user.bankName : bankName.text,
       'account_name':
@@ -93,6 +95,7 @@ class _EditProfileState extends State<EditProfile>
       var request = http.MultipartRequest('POST', Uri.parse(url));
       data.forEach((index, info) {
         request.fields[index] = info;
+        print("$index:$info ");
       });
       /*  //var d = Map<String, dynamic>.from(data);
       request.fields['fname'] = data['fname'];
@@ -173,6 +176,7 @@ class _EditProfileState extends State<EditProfile>
             right: 0,
             child: Consumer<UserModel>(builder: (context, user, child) {
               var states = user.user.settings['states'];
+              var d = user.user.dob;
               return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
@@ -257,7 +261,9 @@ class _EditProfileState extends State<EditProfile>
                       Widgets.text('Date of Birth',
                           fontWeight: FontWeight.bold),
                       Widgets.textField(dob, TextInputType.text,
-                          hintText: user.user.dob ?? 'mm/dd/yyyy'),
+                          hintText: user.user.dob != null
+                              ? "${d.month}/${d.day}/${d.year}"
+                              : 'mm/dd/yyyy'),
                       SizedBox(height: 25),
                       Widgets.text('Bank Name', fontWeight: FontWeight.bold),
                       Widgets.textField(bankName, TextInputType.text,

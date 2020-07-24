@@ -34,7 +34,7 @@ class User {
   final String occupation;
   final String address;
   final String number;
-  final String dob;
+  final DateTime dob;
 
   User({
     this.state,
@@ -71,20 +71,20 @@ class User {
       lastname: data['lname'],
       fullname: data['full_name'],
       email: data['email'],
-      bankName: data['bank_name'],
-      accountName: data['account_name'],
-      accountNumber: data['account_number'],
+      bankName: data['bank_name'] ?? '',
+      accountName: data['account_name'] ?? '',
+      accountNumber: data['account_number'] ?? '',
       apiToken: data['api_token'],
       type: data['type'],
       profilePic: data['profile_pic'],
       identityPic: data['identity_pic'],
       createdAt: DateTime.parse(data['created_at']) ?? null,
       activities: [],
-      state: data['state'],
-      occupation: data['occupation'],
-      address: data['address'],
-      number: data['number'],
-      dob: data['dob'],
+      state: data['state'] ?? '',
+      occupation: data['occupation'] ?? '',
+      address: data['address'] ?? '',
+      number: data['number'] ?? '',
+      dob: DateTime.parse(data['created_at']) ?? null,
     );
   }
 

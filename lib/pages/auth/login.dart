@@ -24,9 +24,21 @@ class _LoginState extends State<Login> {
   //var loading = false;
   final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
+  @override
+  Future<void> didChangeDependencies() async {
+    super.didChangeDependencies();
+  }
+
   @override
   void initState() {
     super.initState();
+    getJson(fileName: 'credentials.json').then((data) {
+      if (data != null) {
+        var credential = json.decode(data);
+        username.value = TextEditingValue(text: credential['username']);
+      }
+    });
 
     firebaseMessaging.requestNotificationPermissions();
 

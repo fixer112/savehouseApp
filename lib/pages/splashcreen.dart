@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:savehouse/globals.dart';
 import 'package:savehouse/pages/land.dart';
 import 'package:savehouse/widgets.dart';
 
@@ -29,6 +30,8 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
+    getConfig(context);
 
     loading();
   }

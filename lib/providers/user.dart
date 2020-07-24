@@ -80,6 +80,9 @@ class UserModel extends ChangeNotifier {
         if (body != null) setUser(User.fromMap(body));
         user.user.settings = body['settings'];
         await user.user.getAllInvestments(context, _scaffoldKey);
+        await removeJson(fileName: 'credentials.json');
+        await saveJson(jsonEncode({'username': username}),
+            fileName: 'credentials.json');
         Get.off(Home());
       }, context, _scaffoldKey);
     } catch (e) {
@@ -103,14 +106,15 @@ class UserModel extends ChangeNotifier {
         'Accept': 'application/json',
       });
       user.setLoading(false);
+      print(response.statusCode);
+      print(response.body);
       var body = json.decode(response.body).containsKey('data')
           ? json.decode(response.body)['data']
           : json.decode(response.body);
-
       request(response, () async {
-        if (body != null) setUser(User.fromMap(body));
-        user.user.settings = body['settings'];
-        await user.user.getAllInvestments(context, _scaffoldKey);
+        await removeJson(fileName: 'credentials.json');
+        await saveJson(jsonEncode({'username': data['username']}),
+            fileName: 'credentials.json');
         showRegisteredWidget(context);
       }, context, _scaffoldKey);
     } catch (e) {

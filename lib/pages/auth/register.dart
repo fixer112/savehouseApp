@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:savehouse/globals.dart';
 import 'package:savehouse/pages/auth/login.dart';
 import 'package:savehouse/pages/widgets/registered.dart';
 import 'package:savehouse/providers/user.dart';
@@ -29,6 +30,12 @@ class _RegisterState extends State<Register> {
   //var loading = false;
 
   final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    getConfig(context);
+  }
 
   @override
   Widget build(context) {
@@ -130,9 +137,10 @@ class _RegisterState extends State<Register> {
             'lname': lName.text,
             'email': email.text,
             'password': password.text,
-            'passsword_confirmation': confirmPassword.text
+            'password_confirmation': confirmPassword.text
           };
           user.register(data, context, _scaffoldKey);
+          closeKeybord(context);
 
           /* Timer.periodic(Duration(seconds: 2), (t) {
             setState(() {

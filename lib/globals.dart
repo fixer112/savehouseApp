@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:savehouse/providers/user.dart';
 
 import 'values.dart';
 import 'widgets.dart';
+import 'package:path_provider/path_provider.dart';
 
 final String connErrorMsg = 'Connection Failed';
 
@@ -108,13 +110,13 @@ processResponse(statusCode, body, Function action, context, _scaffoldKey) {
     return getSnack('Error', errors);
   }
 
-  if (statusCode == 200) {
+  if (statusCode >= 200 && statusCode < 300) {
     if (body.containsKey('error')) {
       getSnack('Error', body['error']);
       //snackbar(body['error'], context, _scaffoldKey);
     }
     if (body.containsKey('success')) {
-      getSnack('Error', body['success']);
+      getSnack('Alert', body['success']);
       //snackbar(body['success'], context, _scaffoldKey);
     }
     action();
@@ -219,4 +221,28 @@ Future bgMsgHdl(Map<String, dynamic> message) async {
   print("onbgMessage: $message");
   showNotificationWithDefaultSound(
       message['data']['title'], message['data']['body']);
+}
+
+Future<Null> saveJson(String content, {String fileName = 'user.json'}) async {
+  Directory appDocDir = await getApplicationDocumentsDirectory();
+  String path = appDocDir.path;
+  File file = new File(path + "/" + fileName);
+  file.createSync();
+  file.writeAsStringSync((content));
+}
+
+Future getJson({String fileName = 'user.json'}) async {
+  Directory appDocDir = await getApplicationDocumentsDirectory();
+  String path = appDocDir.path;
+  var jsonFile = new File(path + "/" + fileName);
+  bool fileExists = jsonFile.existsSync();
+  return fileExists ? (jsonFile.readAsStringSync()) : null;
+}
+
+Future<Null> removeJson({String fileName = 'user.json'}) async {
+  Directory appDocDir = await getApplicationDocumentsDirectory();
+  String path = appDocDir.path;
+  var jsonFile = new File(path + "/" + fileName);
+  bool fileExists = jsonFile.existsSync();
+  if (fileExists) jsonFile.delete();
 }
