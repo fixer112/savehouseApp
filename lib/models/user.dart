@@ -17,6 +17,9 @@ class User {
   final String lastname;
   final String fullname;
   final String email;
+  final String bankName;
+  final String accountNumber;
+  final String accountName;
   final String apiToken;
   //final List<String> appToken;
   final String type;
@@ -27,24 +30,38 @@ class User {
   List<Activity> activities;
   Map<String, dynamic> dynamicInvestments;
   var settings;
+  final String state;
+  final String occupation;
+  final String address;
+  final String number;
+  final String dob;
 
-  User(
-      {this.id,
-      this.username,
-      this.firstname,
-      this.fullname,
-      this.lastname,
-      this.email,
-      this.apiToken,
-      //this.appToken,
-      this.type,
-      this.profilePic,
-      this.createdAt,
-      this.investments,
-      this.activities,
-      this.dynamicInvestments,
-      this.settings,
-      this.identityPic});
+  User({
+    this.state,
+    this.occupation,
+    this.address,
+    this.number,
+    this.dob,
+    this.id,
+    this.username,
+    this.firstname,
+    this.fullname,
+    this.lastname,
+    this.email,
+    this.apiToken,
+    //this.appToken,
+    this.type,
+    this.profilePic,
+    this.createdAt,
+    this.investments,
+    this.activities,
+    this.dynamicInvestments,
+    this.settings,
+    this.identityPic,
+    this.accountName,
+    this.accountNumber,
+    this.bankName,
+  });
 
   factory User.fromMap(Map data) {
     return User(
@@ -54,12 +71,20 @@ class User {
       lastname: data['lname'],
       fullname: data['full_name'],
       email: data['email'],
+      bankName: data['bank_name'],
+      accountName: data['account_name'],
+      accountNumber: data['account_number'],
       apiToken: data['api_token'],
       type: data['type'],
       profilePic: data['profile_pic'],
       identityPic: data['identity_pic'],
       createdAt: DateTime.parse(data['created_at']) ?? null,
       activities: [],
+      state: data['state'],
+      occupation: data['occupation'],
+      address: data['address'],
+      number: data['number'],
+      dob: data['dob'],
     );
   }
 

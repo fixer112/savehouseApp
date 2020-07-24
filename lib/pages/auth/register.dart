@@ -112,24 +112,6 @@ class _RegisterState extends State<Register> {
         Widgets.textField(email, TextInputType.emailAddress),
         SizedBox(height: 25),
         Center(
-          child: Widgets.text('Bank Name',
-              fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        Widgets.textField(bankName, TextInputType.text),
-        SizedBox(height: 25),
-        Center(
-          child: Widgets.text('Account Name',
-              fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        Widgets.textField(accountName, TextInputType.text),
-        SizedBox(height: 25),
-        Center(
-          child: Widgets.text('Account Number',
-              fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        Widgets.textField(accountNumber, TextInputType.text),
-        SizedBox(height: 25),
-        Center(
           child: Widgets.text('Password',
               fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -139,7 +121,7 @@ class _RegisterState extends State<Register> {
           child: Widgets.text('Confirm Password',
               fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        Widgets.textField(confirmPassword, TextInputType.phone),
+        Widgets.textField(confirmPassword, TextInputType.visiblePassword),
         SizedBox(height: 25),
         Widgets.button("Register", () {
           var data = {
@@ -147,9 +129,8 @@ class _RegisterState extends State<Register> {
             'fname': fName.text,
             'lname': lName.text,
             'email': email.text,
-            'bank_name': bankName.text,
-            'account_name': accountName.text,
-            'account_number': accountNumber.text,
+            'password': password.text,
+            'passsword_confirmation': confirmPassword.text
           };
           user.register(data, context, _scaffoldKey);
 

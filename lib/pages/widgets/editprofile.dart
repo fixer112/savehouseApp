@@ -27,6 +27,14 @@ class _EditProfileState extends State<EditProfile>
   var newPass = TextEditingController();
   var confirmPass = TextEditingController();
   var email = TextEditingController();
+  var bankName = TextEditingController();
+  var accountName = TextEditingController();
+  var accountNumber = TextEditingController();
+  var occupation = TextEditingController();
+  var address = TextEditingController();
+  var number = TextEditingController();
+  var dob = TextEditingController();
+  String state;
   //var phone = TextEditingController();
 
   var loading = false;
@@ -37,10 +45,11 @@ class _EditProfileState extends State<EditProfile>
   AnimationController controller;
 
   Future getImage() async {
-    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    final picker = ImagePicker();
+    PickedFile image = await picker.getImage(source: ImageSource.gallery);
     //print(image.path);
     setState(() {
-      _image = image;
+      _image = File(image.path);
     });
     //print(_image.path);
   }
@@ -51,6 +60,16 @@ class _EditProfileState extends State<EditProfile>
       'fname': firstName.text == '' ? user.firstname : firstName.text,
       'lname': lastName.text == '' ? user.lastname : lastName.text,
       'email': email.text == '' ? user.email : email.text,
+      'occupation': occupation.text == '' ? user.occupation : occupation.text,
+      'address': address.text == '' ? user.address : address.text,
+      'number': number.text == '' ? user.number : number.text,
+      'dob': dob.text == '' ? user.dob : dob.text,
+      'state': state == null ? user.state : state,
+      'bank_name': bankName.text == '' ? user.bankName : bankName.text,
+      'account_name':
+          accountName.text == '' ? user.accountName : accountName.text,
+      'account_number':
+          accountName.text == '' ? user.accountNumber : accountNumber.text,
       'old_password': oldPass.text,
       'password': newPass.text,
       'password_confirmation': confirmPass.text,
@@ -72,13 +91,16 @@ class _EditProfileState extends State<EditProfile>
       var url =
           '${user.hostUrl}/api/user/${user.user.id}/edit?api_token=${user.user.apiToken}';
       var request = http.MultipartRequest('POST', Uri.parse(url));
-      //var d = Map<String, dynamic>.from(data);
+      data.forEach((index, info) {
+        request.fields[index] = info;
+      });
+      /*  //var d = Map<String, dynamic>.from(data);
       request.fields['fname'] = data['fname'];
       request.fields['lname'] = data['lname'];
       request.fields['email'] = data['email'];
       request.fields['old_password'] = data['old_password'];
       request.fields['password'] = data['password'];
-      request.fields['password_confirmation'] = data['password_confirmation'];
+      request.fields['password_confirmation'] = data['password_confirmation']; */
 
       if (_image != null) {
         request.files
@@ -150,6 +172,7 @@ class _EditProfileState extends State<EditProfile>
             left: 0,
             right: 0,
             child: Consumer<UserModel>(builder: (context, user, child) {
+              var states = user.user.settings['states'];
               return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
@@ -198,6 +221,56 @@ class _EditProfileState extends State<EditProfile>
                           fontWeight: FontWeight.bold),
                       Widgets.textField(email, TextInputType.emailAddress,
                           hintText: user.user.email),
+                      SizedBox(height: 25),
+                      Widgets.text('State', fontWeight: FontWeight.bold),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: DropdownButton(
+                          items: List.generate(states.length, (index) {
+                            //var key = investments.keys.toList()[index];
+                            var string = states[index].toString();
+                            return Widgets.dropItem(
+                                string.toUpperCase(), string);
+                          }),
+                          hint: Widgets.text(user.user.state ?? 'Choose State'),
+                          value: state,
+                          onChanged: (value) {
+                            setState(() {
+                              state = value;
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 25),
+                      Widgets.text('Occupation', fontWeight: FontWeight.bold),
+                      Widgets.textField(occupation, TextInputType.text,
+                          hintText: user.user.occupation),
+                      SizedBox(height: 25),
+                      Widgets.text('Address', fontWeight: FontWeight.bold),
+                      Widgets.textField(address, TextInputType.text,
+                          hintText: user.user.address),
+                      SizedBox(height: 25),
+                      Widgets.text('Phone Number', fontWeight: FontWeight.bold),
+                      Widgets.textField(number, TextInputType.text,
+                          hintText: user.user.number),
+                      SizedBox(height: 25),
+                      Widgets.text('Date of Birth',
+                          fontWeight: FontWeight.bold),
+                      Widgets.textField(dob, TextInputType.text,
+                          hintText: user.user.dob ?? 'mm/dd/yyyy'),
+                      SizedBox(height: 25),
+                      Widgets.text('Bank Name', fontWeight: FontWeight.bold),
+                      Widgets.textField(bankName, TextInputType.text,
+                          hintText: user.user.bankName),
+                      SizedBox(height: 25),
+                      Widgets.text('Account Name', fontWeight: FontWeight.bold),
+                      Widgets.textField(accountName, TextInputType.text,
+                          hintText: user.user.accountNumber),
+                      SizedBox(height: 25),
+                      Widgets.text('Accouunt Number',
+                          fontWeight: FontWeight.bold),
+                      Widgets.textField(accountNumber, TextInputType.text,
+                          hintText: user.user.accountNumber),
                       SizedBox(height: 25),
                       Widgets.text('Old Password (optional)',
                           fontWeight: FontWeight.bold),
