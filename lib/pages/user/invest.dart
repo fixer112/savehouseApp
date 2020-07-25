@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
-import 'package:savehouse/models/user.dart';
 import 'package:savehouse/pages/widgets/imagepreview.dart';
 import 'package:savehouse/providers/user.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +16,6 @@ import '../../globals.dart';
 import '../../values.dart';
 import '../../widgets.dart';
 import '../home.dart';
-import '../widgets/popup.dart';
 
 class Invest extends StatefulWidget {
   @override
@@ -39,10 +37,11 @@ class _InvestState extends State<Invest> {
   final GlobalKey _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future getImage() async {
-    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    final picker = ImagePicker();
+    PickedFile image = await picker.getImage(source: ImageSource.gallery);
     //print(image.path);
     setState(() {
-      _image = image;
+      _image = File(image.path);
     });
     //print(_image.path);
   }
@@ -58,7 +57,7 @@ class _InvestState extends State<Invest> {
       request.fields['amount'] = amount.text;
       request.fields['type'] = type;
       request.fields['sub_type'] = subType;
-      request.fields['duration'] = duration.text;
+      //request.fields['duration'] = duration.text;
 
       //if (_image != null) {
       request.files
@@ -236,7 +235,6 @@ class _InvestState extends State<Invest> {
                           subTypes = user
                               .user.settings['investments'][type].keys
                               .toList();
-                          //print(subTypes);
                         });
                       },
                     ),
@@ -250,9 +248,12 @@ class _InvestState extends State<Invest> {
                       isExpanded: true,
                       items: List.generate(subTypes.length, (index) {
                         //var key = investments.keys.toList()[index];
-                        var string = subTypes[index].toString();
+                        var string = subTypes[index];
                         var sub =
                             user.user.settings['investments'][type][string];
+                        //print(string);
+                        //print(sub);
+
                         return Widgets.dropItem(
                             "${string.toUpperCase()} (${sub['roi']}% per month) for ${sub['duration']} months",
                             string);
@@ -261,7 +262,7 @@ class _InvestState extends State<Invest> {
                       value: subType,
                       onChanged: (value) {
                         setState(() {
-                          type = value;
+                          subType = value;
                         });
                       },
                     ),
